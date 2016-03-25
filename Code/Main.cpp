@@ -28,6 +28,10 @@ int main(int argc, char** argv)
 
 	while (true)
 	{
+		int temp = waitKey(30);
+		//if( temp >= 0 )
+		//	std::cout << temp << "\n";
+
 		if (!paused)
 		{
 			Mat imageA;
@@ -50,23 +54,22 @@ int main(int argc, char** argv)
 				Mat result = sticher.StichImages(images, sizes);
 				imshow("Result", result);
 			}
+
+			if (temp == 32)
+			{
+				sticher.CalculateStich(images, sizes, 0.75, 4.0, false);
+
+				myCount++;
+			}	
 		}
-
-		int temp = waitKey(30);
-		if( temp >= 0 )
-			std::cout << temp << "\n";
-
 		if (temp == 32)
-		{
-			sticher.CalculateStich(images, sizes, 0.75, 4.0, false);
-
-			myCount++;
+					{
 		}
 		else if (temp == 112)
 		{
 			paused = !paused;
 		}
-		else
+		else if( temp >= 0)
 		{
 			break;
 		}
