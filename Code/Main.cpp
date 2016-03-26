@@ -9,8 +9,6 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	//TEST
-
 	VideoCapture capA("AFirst.avi");
 	if (!capA.isOpened())  // check if we succeeded
 		return -1;
