@@ -11,7 +11,5 @@ class Main
 public:
 	Main();
 	~Main();
-	
-	//I made a change
 };
 
