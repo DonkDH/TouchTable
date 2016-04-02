@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "RealTimeStitcher.h"
+#include "TouchTracker.h"
 
 using namespace cv;
 using namespace std;
@@ -25,6 +26,8 @@ int main(int argc, char** argv)
 	int myCount = 0;
 	RealTimeStitcher sticher = RealTimeStitcher();
 	bool paused = false;
+
+	TouchTracker tracker;
 
 	while (true)
 	{
@@ -52,6 +55,7 @@ int main(int argc, char** argv)
 			if (sticher.CanStich())
 			{
 				Mat result = sticher.StichImages(images, sizes);
+				result = tracker.GenerateTrackingImage(result);
 				imshow("Result", result);
 			}
 

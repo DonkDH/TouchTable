@@ -117,10 +117,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\Code\Main.h" />
     <ClInclude Include="..\..\Code\RealTimeStitcher.h" />
+    <ClInclude Include="..\..\Code\TouchTracker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Code\Main.cpp" />
     <ClCompile Include="..\..\Code\RealTimeStitcher.cpp" />
+    <ClCompile Include="..\..\Code\TouchTracker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
