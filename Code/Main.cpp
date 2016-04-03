@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 			if (sticher.CanStich())
 			{
 				Mat result = sticher.StichImages(images, sizes);
-				result = tracker.GenerateTrackingImage(result);
+				tracker.UpdateTracking(result);
 				imshow("Result", result);
 			}
 
