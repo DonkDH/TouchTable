@@ -40,10 +40,15 @@ int main(int argc, char** argv)
 			Mat imageA;
 			capA >> imageA;
 
+			Point2f center(imageA.cols / 2.0f, imageA.rows / 2.0f);
+			Mat rotationMatrix = getRotationMatrix2D(center, 90.0f, 1.0f);
+			warpAffine(imageA, imageA, rotationMatrix, imageA.size());
 			imshow("Display Image A", imageA);
 
 			Mat imageB;
 			capB >> imageB;
+
+			warpAffine(imageB, imageB, rotationMatrix, imageB.size());
 
 			imshow("Display Image B", imageB);
 
