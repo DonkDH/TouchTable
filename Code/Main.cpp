@@ -10,11 +10,11 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	VideoCapture capA("AFirst.avi");
+	VideoCapture capA(0);
 	if (!capA.isOpened())  // check if we succeeded
 		return -1;
 
-	VideoCapture capB("BFirst.avi");
+	VideoCapture capB(1);
 	if (!capB.isOpened())  // check if we succeeded
 		return -1;
 
@@ -32,8 +32,8 @@ int main(int argc, char** argv)
 	while (true)
 	{
 		int temp = waitKey(30);
-		//if( temp >= 0 )
-		//	std::cout << temp << "\n";
+		if( temp >= 0 )
+			std::cout << temp << "\n";
 
 		if (!paused)
 		{
@@ -59,14 +59,14 @@ int main(int argc, char** argv)
 				imshow("Result", result);
 			}
 
-			if (temp == 32)
+			if (temp == 1048608 || temp == 32)
 			{
 				sticher.CalculateStich(images, sizes, 0.75, 4.0, false);
 
 				myCount++;
 			}	
 		}
-		if (temp == 32)
+		if (temp == 1048608 || temp == 32)
 					{
 		}
 		else if (temp == 112)
