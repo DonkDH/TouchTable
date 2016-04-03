@@ -9,12 +9,14 @@ public:
 
 	void UpdateTracking( cv::Mat inputImage );
 
+private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
-	
+	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
+
 private:
 	cv::Mat backgroundImage;
 	bool grabBackground = true;
 
-	double m_cutOffThreshhold = 20;
+	double m_cutOffThreshhold = 40;
 };
 
