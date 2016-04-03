@@ -53,13 +53,18 @@ int main(int argc, char** argv)
 			imshow("Display Image B", imageB);
 
 			Mat images[]{ imageA, imageB };
-			cv::Size sizes[]{ Size((int)capA.get(CV_CAP_PROP_FRAME_WIDTH), (int)capA.get(CV_CAP_PROP_FRAME_HEIGHT)),
-				Size((int)capB.get(CV_CAP_PROP_FRAME_WIDTH), (int)capB.get(CV_CAP_PROP_FRAME_HEIGHT))
+				cv::Size sizes[]{ Size((int)imageA.cols, (int)imageA.rows),
+				Size((int)imageB.cols, (int)imageB.rows)
 			};
 
 			if (sticher.CanStich())
 			{
 				Mat result = sticher.StichImages(images, sizes);
+
+				Point2f center(result.cols / 2.0f, result.rows / 2.0f);
+				Mat rotationMatrix = getRotationMatrix2D(center, -90.0f, 1.0f);
+				warpAffine(result, result, rotationMatrix, result.size());
+				
 				tracker.UpdateTracking(result);
 				imshow("Result", result);
 			}
