@@ -4,17 +4,23 @@
 #include <string>
 #include "RealTimeStitcher.h"
 #include "TouchTracker.h"
+#include "CorrectPerspective.h"
 
 using namespace cv;
 using namespace std;
 
+void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+	((CorrectPerspective*)userdata)->CallBackFunc(event, x, y, flags);
+}
+
 int main(int argc, char** argv)
 {
-	VideoCapture capA(0);
+	VideoCapture capA("BFirst.avi");
 	if (!capA.isOpened())  // check if we succeeded
 		return -1;
 
-	VideoCapture capB(1);
+	VideoCapture capB("AFirst.avi");
 	if (!capB.isOpened())  // check if we succeeded
 		return -1;
 
@@ -28,6 +34,7 @@ int main(int argc, char** argv)
 	bool paused = false;
 
 	TouchTracker tracker;
+	CorrectPerspective* correctPers = new CorrectPerspective();
 
 	while (true)
 	{
@@ -42,15 +49,21 @@ int main(int argc, char** argv)
 
 			Point2f center(imageA.cols / 2.0f, imageA.rows / 2.0f);
 			Mat rotationMatrix = getRotationMatrix2D(center, 90.0f, 1.0f);
-			warpAffine(imageA, imageA, rotationMatrix, imageA.size());
+			Mat outA;
+			//warpAffine(imageA, outA, rotationMatrix, imageA.size());
 			imshow("Display Image A", imageA);
 
 			Mat imageB;
 			capB >> imageB;
 
-			warpAffine(imageB, imageB, rotationMatrix, imageB.size());
+			Mat imageCorrectedB = correctPers->UpdatePerspective(imageB);
+
+			//warpAffine(imageB, imageB, rotationMatrix, imageB.size());
 
 			imshow("Display Image B", imageB);
+
+			cv::setMouseCallback("Display Image B", CallBackFunc, correctPers);
+			imshow("Display Image B Corrected", imageCorrectedB);
 
 			Mat images[]{ imageA, imageB };
 				cv::Size sizes[]{ Size((int)imageA.cols, (int)imageA.rows),
@@ -63,7 +76,7 @@ int main(int argc, char** argv)
 
 				Point2f center(result.cols / 2.0f, result.rows / 2.0f);
 				Mat rotationMatrix = getRotationMatrix2D(center, -90.0f, 1.0f);
-				warpAffine(result, result, rotationMatrix, result.size());
+			//	warpAffine(result, result, rotationMatrix, result.size());
 				
 				tracker.UpdateTracking(result);
 				imshow("Result", result);
