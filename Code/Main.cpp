@@ -16,10 +16,11 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata)
 
 int main(int argc, char** argv)
 {
-	VideoCapture capA("BFirst.avi");
+	VideoCapture capA = VideoCapture("BFirst.avi");
 	if (!capA.isOpened())  // check if we succeeded
+	{
 		return -1;
-
+	}
 	VideoCapture capB("AFirst.avi");
 	if (!capB.isOpened())  // check if we succeeded
 		return -1;
@@ -90,7 +91,7 @@ int main(int argc, char** argv)
 			}	
 		}
 		if (temp == 1048608 || temp == 32)
-					{
+		{
 		}
 		else if (temp == 112)
 		{
