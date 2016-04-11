@@ -9,11 +9,6 @@
 using namespace cv;
 using namespace std;
 
-void CallBackFunc(int event, int x, int y, int flags, void* userdata)
-{
-	((CorrectPerspective*)userdata)->CallBackFunc(event, x, y, flags);
-}
-
 int main(int argc, char** argv)
 {
 	VideoCapture capA = VideoCapture("BFirst.avi");
@@ -63,7 +58,7 @@ int main(int argc, char** argv)
 
 			imshow("Display Image B", imageB);
 
-			cv::setMouseCallback("Display Image B", CallBackFunc, correctPers);
+			//cv::setMouseCallback("Display Image B", CallBackFunc, correctPers);
 			imshow("Display Image B Corrected", imageCorrectedB);
 
 			Mat images[]{ imageA, imageB };
@@ -78,7 +73,7 @@ int main(int argc, char** argv)
 				Point2f center(result.cols / 2.0f, result.rows / 2.0f);
 				Mat rotationMatrix = getRotationMatrix2D(center, -90.0f, 1.0f);
 			//	warpAffine(result, result, rotationMatrix, result.size());
-				
+
 				tracker.UpdateTracking(result);
 				imshow("Result", result);
 			}
@@ -88,7 +83,7 @@ int main(int argc, char** argv)
 				sticher.CalculateStich(images, sizes, 0.75, 4.0, false);
 
 				myCount++;
-			}	
+			}
 		}
 		if (temp == 1048608 || temp == 32)
 		{

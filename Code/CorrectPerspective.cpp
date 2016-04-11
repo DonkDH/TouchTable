@@ -15,13 +15,21 @@ CorrectPerspective::~CorrectPerspective()
 {
 }
 
+void CorrectPerspective::UpdateEditor(cv::String windowName, cv::Mat source)
+{
+    cv::Mat displayImage(source);
+
+	cv::line(displayImage, points[0], points[1], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[1], points[2], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[2], points[3], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[3], points[0], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+
+    cv::setMouseCallback(windowName, CorrectPerspective::CallBackFunc, this);
+	imshow(windowName, displayImage);
+}
+
 cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source)
 {
-	cv::Point2f P1 = points[0];
-	cv::Point2f P2 = points[1];
-	cv::Point2f P3 = points[2];
-	cv::Point2f P4 = points[3];
-
 	cv::Rect boundRect = boundingRect(points);
 
 	std::vector<cv::Point2f> outputPoint;
@@ -35,20 +43,15 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source)
 	cv::warpPerspective(source, transformed, transformMatrix, source.size());
 	rectangle(transformed, boundRect, cv::Scalar(0, 255, 0), 1, 8, 0);
 
-	cv::line(source, P1, P2, cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(source, P2, P3, cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(source, P3, P4, cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(source, P4, P1, cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-
-	points[0] = P1;
-	points[1] = P2;
-	points[2] = P3;
-	points[3] = P4;
-
 	return transformed;
 }
 
-void CorrectPerspective::CallBackFunc(int event, int x, int y, int flags)
+void CorrectPerspective::CallBackFunc(int event, int x, int y, int flags, void* userData)
+{
+    ((CorrectPerspective*)userData)->UpdateInput(event, x, y, flags);
+}
+
+void CorrectPerspective::UpdateInput(int event, int x, int y, int flags)
 {
 	if (event == cv::EVENT_LBUTTONDOWN)
 	{

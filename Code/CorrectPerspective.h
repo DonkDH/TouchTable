@@ -9,8 +9,10 @@ public:
 	~CorrectPerspective();
 
 	cv::Mat UpdatePerspective(cv::Mat source);
-	
-	void CallBackFunc(int event, int x, int y, int flags);
+	void UpdateEditor(cv::String windowName, cv::Mat source);
+
+    static void CallBackFunc(int event, int x, int y, int flags, void* userData);
+	void UpdateInput(int event, int x, int y, int flags);
 
 private:
 	std::vector<cv::Point2f> points;
