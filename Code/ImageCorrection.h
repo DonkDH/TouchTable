@@ -14,11 +14,13 @@ public:
 	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective corrector );
 
 private:
-    cv::String nameA = "Capture A";
-    cv::String nameB = "Capture B";
-	cv::VideoCapture capA;
-	cv::VideoCapture capB;
-	CorrectPerspective correctionA;
-	CorrectPerspective correctionB;
+    cv::String m_nameA = "Capture A";
+    cv::String m_nameB = "Capture B";
+	cv::VideoCapture m_capA;
+	cv::VideoCapture m_capB;
+	CorrectPerspective m_correctionA;
+	CorrectPerspective m_correctionB;
+	cv::Mat m_sourceA;
+	cv::Mat m_sourceB;
 };
 

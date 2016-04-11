@@ -13,13 +13,21 @@ ImageCorrection::~ImageCorrection()
 
 void ImageCorrection::Init()
 {
-	capA = OpenCapture("AFirst.avi", 0);
-	capB = OpenCapture("BFirst.avi", 1);
+	m_capA = OpenCapture("AFirst.avi", 0);
+	m_capB = OpenCapture("BFirst.avi", 1);
 }
 
 void ImageCorrection::Update()
 {
+    if( m_capA.isOpened() )
+    {
+        m_capA >> m_sourceA;
+    }
 
+    imshow(m_nameA + " Source", m_sourceA);
+
+    cv::Mat currentA(m_sourceA);
+    currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
 }
 
 cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective corrector)
