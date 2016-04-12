@@ -1,6 +1,6 @@
 #include "ImageCorrection.h"
 
-
+//Builds auto trigger now
 
 ImageCorrection::ImageCorrection()
 {
