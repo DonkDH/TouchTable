@@ -2,8 +2,6 @@
 #include "opencv2/opencv.hpp"
 #include "CorrectPerspective.h"
 
-//sdfgsfdg
-
 class ImageCorrection
 {
 public:
