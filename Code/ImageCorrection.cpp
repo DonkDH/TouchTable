@@ -27,6 +27,17 @@ void ImageCorrection::Update()
 
     cv::Mat currentA(m_sourceA);
     currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
+
+
+    if( m_capB.isOpened() )
+    {
+        m_capB >> m_sourceA;
+    }
+
+    imshow(m_nameB + " Source", m_sourceB);
+
+    cv::Mat currentB(m_sourceB);
+    currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
 }
 
 cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective corrector)
