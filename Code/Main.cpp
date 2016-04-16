@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 		if( temp >= 0 )
 			std::cout << temp << "\n";
 
-        imageCorrector.Update();
+        	imageCorrector.Update();
 
 		if (temp == 1048608 || temp == 32)
 		{

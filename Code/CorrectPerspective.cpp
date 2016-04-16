@@ -4,10 +4,11 @@
 
 CorrectPerspective::CorrectPerspective()
 {
+	currentIndex = -1;
 	points.push_back(cv::Point2f( 0.0f, 0.0f));
-	points.push_back(cv::Point2f(200.0f, 0.0f));
+	points.push_back(cv::Point2f( 0.0f, 200.0f));
 	points.push_back(cv::Point2f(200.0f, 200.0f));
-	points.push_back(cv::Point2f( 10.0f, 200.0f));
+	points.push_back(cv::Point2f(200.0f, 0.0f));
 }
 
 
@@ -19,12 +20,12 @@ void CorrectPerspective::UpdateEditor(cv::String windowName, cv::Mat source)
 {
     cv::Mat displayImage(source);
 
-	cv::line(displayImage, points[0], points[1], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(displayImage, points[1], points[2], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[0], points[1], cv::Scalar(255, 255, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[1], points[2], cv::Scalar(0, 255, 255), 1, CV_AA, 0);
 	cv::line(displayImage, points[2], points[3], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(displayImage, points[3], points[0], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, points[3], points[0], cv::Scalar(255, 0, 255), 1, CV_AA, 0);
 
-    cv::setMouseCallback(windowName, CorrectPerspective::CallBackFunc, this);
+    	cv::setMouseCallback(windowName, CorrectPerspective::CallBackFunc, this);
 	imshow(windowName, displayImage);
 }
 
@@ -76,7 +77,7 @@ void CorrectPerspective::UpdateInput(int event, int x, int y, int flags)
 	}
 	else if (event == cv::EVENT_MOUSEMOVE)
 	{
-		if (currentIndex != -1)
+		if (currentIndex > -1 && currentIndex < points.size())
 		{
 			points[currentIndex].x = x;
 			points[currentIndex].y = y;
