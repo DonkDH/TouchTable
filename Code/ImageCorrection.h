@@ -1,6 +1,7 @@
 #pragma once
 #include "opencv2/opencv.hpp"
 #include "CorrectPerspective.h"
+#include "RealTimeStitcher.h"
 
 class ImageCorrection
 {
@@ -13,6 +14,8 @@ public:
 	void Update();
 	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector );
 
+	void CalculateImageStitch();
+
 private:
     cv::String m_nameA = "Capture A";
     cv::String m_nameB = "Capture B";
@@ -22,5 +25,8 @@ private:
 	CorrectPerspective* m_correctionB;
 	cv::Mat m_sourceA;
 	cv::Mat m_sourceB;
+
+	RealTimeStitcher* m_stitcher;
+	bool calculateStich = false;
 };
 

@@ -2,9 +2,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
 #include <string>
-//#include "RealTimeStitcher.h"
-//#include "TouchTracker.h"
-//#include "CorrectPerspective.h"
 #include "ImageCorrection.h"
 
 
@@ -27,6 +24,7 @@ int main(int argc, char** argv)
 
 		if (temp == 1048608 || temp == 32)
 		{
+			imageCorrector.CalculateImageStitch();
 		}
 		else if (temp == 112)
 		{

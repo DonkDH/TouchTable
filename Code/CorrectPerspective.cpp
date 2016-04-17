@@ -18,7 +18,7 @@ CorrectPerspective::~CorrectPerspective()
 
 void CorrectPerspective::UpdateEditor(cv::String windowName, cv::Mat source)
 {
-    cv::Mat displayImage(source);
+	cv::Mat displayImage = source.clone();
 
 	cv::line(displayImage, points[0], points[1], cv::Scalar(255, 255, 255), 1, CV_AA, 0);
 	cv::line(displayImage, points[1], points[2], cv::Scalar(0, 255, 255), 1, CV_AA, 0);
@@ -42,7 +42,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source)
 	cv::Mat transformMatrix = cv::getPerspectiveTransform(points, outputPoint);
 	cv::Mat transformed = cv::Mat::zeros(source.rows, source.cols, CV_8UC3);
 	cv::warpPerspective(source, transformed, transformMatrix, source.size());
-	rectangle(transformed, boundRect, cv::Scalar(0, 255, 0), 1, 8, 0);
+	//rectangle(transformed, boundRect, cv::Scalar(0, 255, 0), 1, 8, 0);
 
 	return transformed;
 }

@@ -22,7 +22,7 @@ void RealTimeStitcher::CalculateStich(Mat images[], Size sizes[], float ratio, f
 
 bool RealTimeStitcher::CanStich()
 {
-	return matchedPoints != nullptr;
+	return matchedPoints != nullptr && matchedPoints->homoMatrix.size > 0;
 }
 
 Mat RealTimeStitcher::StichImages(Mat images[], Size sizes[])
