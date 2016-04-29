@@ -7,16 +7,22 @@ class CorrectPerspective
 {
 public:
 	CorrectPerspective();
+	CorrectPerspective(std::vector<cv::Point2f> points);
 	~CorrectPerspective();
 
-	cv::Mat UpdatePerspective(cv::Mat source);
+	cv::Mat UpdatePerspective(cv::Mat source, bool sharpenImage);
 	void UpdateEditor(cv::String windowName, cv::Mat source);
 
     static void CallBackFunc(int event, int x, int y, int flags, void* userData);
 	void UpdateInput(int event, int x, int y, int flags);
 
+	std::vector<cv::Point2f> GetCorrectionCordinates() { return m_points; };
+
 private:
-	std::vector<cv::Point2f> points;
-	int currentIndex = -1;
+	cv::Mat SharpenImage(cv::Mat source);
+
+	std::vector<cv::Point2f> m_points;
+	int m_currentIndex = -1;
+	cv::Point2f m_editorSourceImageSize;
 };
 

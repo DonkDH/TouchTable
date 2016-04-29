@@ -2,6 +2,8 @@
 #include "opencv2/opencv.hpp"
 #include "CorrectPerspective.h"
 #include "RealTimeStitcher.h"
+#include "json.hpp"
+#include <fstream>
 
 class ImageCorrection
 {
@@ -9,12 +11,17 @@ public:
 	ImageCorrection();
 	~ImageCorrection();
 	void Init();
-	cv::VideoCapture OpenCapture(cv::String source, int camera, bool forceCamera = false);
-
 	void Update();
-	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector );
-
 	void CalculateImageStitch();
+	void SaveSettings();
+
+private:
+	cv::VideoCapture OpenCapture(cv::String source, int camera, bool forceCamera = false);
+	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector);
+
+
+	cv::String ReadAllTextFromFile(const char* path);
+	void WrightTextToFile(const char* path, std::string data);
 
 private:
     cv::String m_nameA = "Capture A";
@@ -28,5 +35,7 @@ private:
 
 	RealTimeStitcher* m_stitcher;
 	bool calculateStich = false;
+
+	bool showEditor = true;
 };
 

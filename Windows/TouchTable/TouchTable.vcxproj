@@ -115,11 +115,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Code\CorrectPerspective.h" />
+    <ClInclude Include="..\..\Code\ImageCorrection.h" />
+    <ClInclude Include="..\..\Code\json.hpp" />
     <ClInclude Include="..\..\Code\Main.h" />
     <ClInclude Include="..\..\Code\RealTimeStitcher.h" />
     <ClInclude Include="..\..\Code\TouchTracker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Code\CorrectPerspective.cpp" />
+    <ClCompile Include="..\..\Code\ImageCorrection.cpp" />
     <ClCompile Include="..\..\Code\Main.cpp" />
     <ClCompile Include="..\..\Code\RealTimeStitcher.cpp" />
     <ClCompile Include="..\..\Code\TouchTracker.cpp" />

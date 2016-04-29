@@ -19,6 +19,12 @@
     <Filter Include="Source Code\Touch">
       <UniqueIdentifier>{4df4bc54-a1c8-43da-91ac-086f667777ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Code\Perspective Correction">
+      <UniqueIdentifier>{b0cce6ae-96aa-4b63-923f-3c6a98859ee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Json">
+      <UniqueIdentifier>{39c27820-cb2b-42df-b529-5b21e740c525}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Code\Main.h">
@@ -30,6 +36,15 @@
     <ClInclude Include="..\..\Code\TouchTracker.h">
       <Filter>Source Code\Touch</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Code\CorrectPerspective.h">
+      <Filter>Source Code\Perspective Correction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Code\ImageCorrection.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Code\json.hpp">
+      <Filter>Source Code\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Code\Main.cpp">
@@ -40,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Code\TouchTracker.cpp">
       <Filter>Source Code\Touch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Code\CorrectPerspective.cpp">
+      <Filter>Source Code\Perspective Correction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Code\ImageCorrection.cpp">
+      <Filter>Source Code</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

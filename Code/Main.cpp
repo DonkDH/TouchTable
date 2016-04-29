@@ -26,11 +26,15 @@ int main(int argc, char** argv)
 		{
 			imageCorrector.CalculateImageStitch();
 		}
+		else if (temp == 115)
+		{
+			imageCorrector.SaveSettings();
+		}
 		else if (temp == 112)
 		{
 			paused = !paused;
 		}
-		else if( temp >= 0)
+		else if( temp == 113)
 		{
 			break;
 		}

@@ -17,9 +17,44 @@ void ImageCorrection::Init()
 	m_capA = OpenCapture("AFirst.avi", 0);
 	m_capB = OpenCapture("BFirst.avi", 1);
 
-	m_correctionA = new CorrectPerspective();
-	m_correctionB = new CorrectPerspective();
+	if (!m_capA.isOpened() || !m_capB.isOpened())
+	{
+		m_sourceA = cv::imread("AFirst.png");
+		m_sourceB = cv::imread("BFirst.png");
+	}
 
+	cv::String loadedData = ReadAllTextFromFile("settings.json");
+	if (loadedData.length() > 0)
+	{
+		nlohmann::json settings = nlohmann::json::parse(loadedData);
+
+		if (settings["pointsA"].is_array())
+		{
+			std::vector<float> raw = settings["pointsA"];
+			std::vector<cv::Point2f> perspectiveData;
+			for (int i = 0; i < raw.size(); i+=2)
+			{
+				perspectiveData.push_back(cv::Point2f(raw[i], raw[i + 1]));
+			}
+			m_correctionA = new CorrectPerspective(perspectiveData);
+		}
+
+		if (settings["pointsB"].is_array())
+		{
+			std::vector<float> raw = settings["pointsB"];
+			std::vector<cv::Point2f> perspectiveData;
+			for (int i = 0; i < raw.size(); i += 2)
+			{
+				perspectiveData.push_back(cv::Point2f(raw[i], raw[i + 1]));
+			}
+			m_correctionB = new CorrectPerspective(perspectiveData);
+		}
+	}
+	else
+	{
+		m_correctionA = new CorrectPerspective();
+		m_correctionB = new CorrectPerspective();
+	}
 	m_stitcher = new RealTimeStitcher();
 	
 }
@@ -68,11 +103,76 @@ void ImageCorrection::Update()
 
 cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector)
 {
-    if( true )
+    if(showEditor)
     {
         corrector->UpdateEditor(sourceName + " Editor", source);
     }
-    return corrector->UpdatePerspective(source);
+    return corrector->UpdatePerspective(source, true);
+}
+
+void ImageCorrection::SaveSettings()
+{
+	nlohmann::json exportData;
+	
+	{
+		std::vector<float> tempStore = std::vector<float>();
+		const std::vector<cv::Point2f> localData = m_correctionA->GetCorrectionCordinates();
+		std::vector<cv::Point2f>::const_iterator itor = localData.begin();
+		for ( ; itor != localData.end(); ++itor)
+		{
+			tempStore.push_back(itor->x);
+			tempStore.push_back(itor->y);
+		}
+		exportData["pointsA"] = tempStore;
+	}
+	{
+		std::vector<float> tempStore = std::vector<float>();
+		const std::vector<cv::Point2f> localData = m_correctionB->GetCorrectionCordinates();
+		std::vector<cv::Point2f>::const_iterator itor = localData.begin();
+		for (; itor != localData.end(); ++itor)
+		{
+			tempStore.push_back(itor->x);
+			tempStore.push_back(itor->y);
+		}
+		exportData["pointsB"] = tempStore;
+	}
+
+	WrightTextToFile( "settings.json", exportData.dump());
+}
+
+cv::String ImageCorrection::ReadAllTextFromFile(const char * path)
+{
+	std::fstream file(path);
+
+	std::string line = "";
+	std::string compleateData = "";
+
+	if (file.is_open())
+	{
+		while ( std::getline(file, line) )
+		{
+			compleateData.append(line);
+			compleateData.append("\n");
+		}
+
+		file.close();
+	}
+
+	return compleateData;
+}
+
+void ImageCorrection::WrightTextToFile(const char * path, std::string data)
+{
+	std::fstream file;
+	file.open(path, std::ios::out);
+
+	if (file.is_open())
+	{
+		file.clear();
+		file << data;
+
+		file.close();
+	}
 }
 
 void ImageCorrection::CalculateImageStitch()
