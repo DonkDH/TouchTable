@@ -48,6 +48,21 @@ void ImageCorrection::Init()
 			}
 			m_correctionB = new CorrectPerspective(perspectiveData);
 		}
+
+		if (settings["showEditor"].is_boolean())
+		{
+			m_showEditor = settings["showEditor"];
+		}
+
+		if (settings["showSourceImage"].is_boolean())
+		{
+			m_showSourceImage = settings["showSourceImage"];
+		}
+
+		if (settings["showCurrentImage"].is_boolean())
+		{
+			m_showCurrentImage = settings["showCurrentImage"];
+		}
 	}
 	else
 	{

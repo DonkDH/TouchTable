@@ -22,7 +22,7 @@ private:
 	bool grabBackground = true;
 
 	double m_cutOffThreshhold = 40;
-
+	int m_miniumBlobSize = 20;
 
 	const char* settingsFileName = "Tracking_Settings.json";
 };
