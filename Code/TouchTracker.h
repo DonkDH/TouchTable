@@ -24,11 +24,11 @@ private:
 	bool grabBackground = true;
 
 	double m_cutOffThreshhold = 40;
+	int m_miniumBlobPoints = 20;
+	int m_maximumBlobPoints = 40;
+
 	int m_miniumBlobSize = 20;
 	int m_maximumBlobSize = 40;
-
-	int m_miniumBlobWidth = 20;
-	int m_maximumBlobHeight = 40;
 
 	const char* settingsFileName = "Tracking_Settings.json";
 };

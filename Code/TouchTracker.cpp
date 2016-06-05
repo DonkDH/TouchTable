@@ -52,15 +52,15 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 		auto ittor = blobs.begin();
 		while ( ittor != blobs.end())
 		{
-			if (ittor->size() < m_miniumBlobSize || ittor->size() > m_maximumBlobSize)
+			//if (ittor->size() < m_miniumBlobPoints || ittor->size() > m_maximumBlobPoints)
 			{
 				cv::Size blobSize = GetSizeOfBlob( *ittor );
 
 				std::cout << "Blob Size: " << blobSize.width << ", " << blobSize.height << " - ";
 
 				// remove smaller blobs
-				if (  ( blobSize.height < m_miniumBlobWidth && blobSize.height > m_maximumBlobHeight )
-				   && ( blobSize.width < m_miniumBlobWidth && blobSize.width > m_maximumBlobHeight ) )
+				if (  ( blobSize.height < m_miniumBlobSize && blobSize.height > m_maximumBlobSize )
+				   && ( blobSize.width < m_miniumBlobSize && blobSize.width > m_maximumBlobSize ) )
 				{
 					blobs.erase(ittor);
 				}
@@ -69,9 +69,9 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 					++ittor;
 				}
 			}
-			else
+			//else
 			{
-				++ittor;
+			//	++ittor;
 			}
 		}
 
@@ -116,22 +116,22 @@ void TouchTracker::LoadSettings()
 
 		if (settings["miniumBlobSize"].is_number())
 		{
-			m_miniumBlobSize = settings["miniumBlobSize"];
+			m_miniumBlobPoints = settings["miniumBlobSize"];
 		}
 
 		if (settings["maximumBlobSize"].is_number())
 		{
-			m_maximumBlobSize = settings["maximumBlobSize"];
+			m_maximumBlobPoints = settings["maximumBlobSize"];
 		}
 		
 		if (settings["miniumBlobWidth"].is_number())
 		{
-			m_miniumBlobWidth = settings["miniumBlobWidth"];
+			m_miniumBlobSize = settings["miniumBlobWidth"];
 		}
 
 		if (settings["maximumBlobHeight"].is_number())
 		{
-			m_maximumBlobHeight = settings["maximumBlobHeight"];
+			m_maximumBlobSize = settings["maximumBlobHeight"];
 		}
 	}
 }
