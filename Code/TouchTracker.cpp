@@ -91,7 +91,7 @@ cv::Size TouchTracker::GetSizeOfBlob(std::vector<cv::Point> blob)
 	cv::Point2f highRight = lowLeft;
 	++ittor;
 
-	for (; ittor == blob.end(); ++ittor)
+	for (; ittor != blob.end(); ++ittor)
 	{
 		lowLeft.x = MIN(lowLeft.x, ittor->x);
 		lowLeft.y = MIN(lowLeft.y, ittor->y);
