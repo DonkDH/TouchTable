@@ -81,7 +81,7 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 
 cv::Size TouchTracker::GetSizeOfBlob(std::vector<cv::Point> blob)
 {
-	if (blob.size() > 0)
+	if (blob.size() <= 0)
 	{
 		return cv::Size();
 	}
