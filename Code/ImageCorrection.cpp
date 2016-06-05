@@ -87,7 +87,7 @@ void ImageCorrection::Update()
 
 	cv::Mat images[]{ currentA, currentB };
 	cv::Size sizesimage[]{ cv::Size(currentA.cols, currentA.rows),
-	cv::Size(currentB.cols, currentB.rows) };
+						   cv::Size(currentB.cols, currentB.rows) };
 	if (calculateStich)
 	{
 		m_stitcher->CalculateStich( images, sizesimage, 0.75, 4.0, false);

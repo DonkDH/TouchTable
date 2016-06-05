@@ -23,22 +23,46 @@ CorrectPerspective::~CorrectPerspective()
 
 void CorrectPerspective::UpdateEditor(cv::String windowName, cv::Mat source)
 {
-	cv::Mat displayImage = source.clone();
+	m_editorSourceImageSize.x = source.cols;
+	m_editorSourceImageSize.y = source.rows;
+	//cv::Mat displayImage = source.clone();
+
+	cv::Mat displayImage(cv::Size(m_editorSourceImageSize.x * 2, m_editorSourceImageSize.y * 2), CV_8UC3, cv::Scalar(0, 0, 0));
+
+	cv::Mat dst = displayImage(cv::Rect(m_editorSourceImageSize.x / 2, 
+										m_editorSourceImageSize.y / 2,
+										m_editorSourceImageSize.x,
+										m_editorSourceImageSize.y
+										));
+	source.copyTo(dst);
 
 	cv::line(displayImage, m_points[0], m_points[1], cv::Scalar(255, 255, 255), 1, CV_AA, 0);
-	cv::line(displayImage, m_points[1], m_points[2], cv::Scalar(0, 255, 255), 1, CV_AA, 0);
+	cv::line(displayImage, m_points[0], m_points[2], cv::Scalar(0, 255, 255), 1, CV_AA, 0);
 	cv::line(displayImage, m_points[2], m_points[3], cv::Scalar(0, 0, 255), 1, CV_AA, 0);
-	cv::line(displayImage, m_points[3], m_points[0], cv::Scalar(255, 0, 255), 1, CV_AA, 0);
+	cv::line(displayImage, m_points[3], m_points[1], cv::Scalar(255, 0, 255), 1, CV_AA, 0);
+
+	//cv::resize(displayImage, displayImage, cv::Size(displayImage.cols / 2, displayImage.rows / 2));
 
     cv::setMouseCallback(windowName, CorrectPerspective::CallBackFunc, this);
 
-	m_editorSourceImageSize.x = displayImage.cols;
-	m_editorSourceImageSize.y = displayImage.rows;
+	m_editorSourceImageSize *= 2;
+
 	imshow(windowName, displayImage);
 }
 
 cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 {
+	cv::Point2f sourceImageSize(source.cols, source.rows);
+
+	cv::Mat sourceImageCpy(cv::Size(sourceImageSize.x * 2, sourceImageSize.y * 2), CV_8UC3, cv::Scalar(0, 0, 0));
+
+	cv::Mat dst = sourceImageCpy(cv::Rect(sourceImageSize.x / 2,
+		sourceImageSize.y / 2,
+		sourceImageSize.x,
+		sourceImageSize.y
+		));
+	source.copyTo(dst);
+
 	cv::Rect boundRect = boundingRect(m_points);
 
 	std::vector<cv::Point2f> outputPoint;
@@ -48,9 +72,11 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 	outputPoint.push_back(cv::Point2f(boundRect.x + boundRect.width, boundRect.y + boundRect.height));
 
 	cv::Mat transformMatrix = cv::getPerspectiveTransform(m_points, outputPoint);
-	cv::Mat transformed = cv::Mat::zeros(source.rows, source.cols, CV_8UC3);
-	cv::warpPerspective(source, transformed, transformMatrix, source.size());
+	cv::Mat transformed = cv::Mat::zeros(sourceImageCpy.rows, sourceImageCpy.cols, CV_8UC3);
+	cv::warpPerspective(sourceImageCpy, transformed, transformMatrix, sourceImageCpy.size());
 	//rectangle(transformed, boundRect, cv::Scalar(0, 255, 0), 1, 8, 0);
+	
+	
 	if (boundRect.x < 0)
 	{
 		boundRect.width += boundRect.x;
@@ -120,10 +146,10 @@ void CorrectPerspective::UpdateInput(int event, int x, int y, int flags)
 			else if (m_points[m_currentIndex].x > m_editorSourceImageSize.x)
 				m_points[m_currentIndex].x = m_editorSourceImageSize.x;
 
-			if (m_points[m_currentIndex].y < 0)
+			if (m_points[m_currentIndex].y < 0 )
 				m_points[m_currentIndex].y = 0;
-			else if (m_points[m_currentIndex].y > m_editorSourceImageSize.y)
-				m_points[m_currentIndex].y = m_editorSourceImageSize.y;
+			else if (m_points[m_currentIndex].y > m_editorSourceImageSize.y )
+				m_points[m_currentIndex].y = m_editorSourceImageSize.y ;
 		}
 	}
 }

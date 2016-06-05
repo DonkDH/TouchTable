@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
 		if (temp == 1048608 || temp == 32)
 		{
-			imageCorrector.CalculateImageStitch();
+			//imageCorrector.CalculateImageStitch();
 		}
 		else if (temp == 115)
 		{

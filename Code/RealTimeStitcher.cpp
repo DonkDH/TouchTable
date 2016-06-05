@@ -41,7 +41,7 @@ Mat RealTimeStitcher::StichImages(Mat images[], Size sizes[])
 
 	warpPerspective(images[0], outputImage, matchedPoints->homoMatrix, outPutSize);
 
-	images[1].copyTo(outputImage(Rect(0, 0, sizes[0].width, sizes[0].height)));
+	images[1].copyTo(outputImage(Rect(0, 0, sizes[1].width, sizes[1].height)));
 	return outputImage;
 }
 
