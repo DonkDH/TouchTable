@@ -34,15 +34,15 @@ int main(int argc, char** argv)
 			//imageCorrector.CalculateImageStitch();
 			updateTouches = !updateTouches;
 		}
-		else if (temp == 115) // S key
+		else if (temp == 115 || temp == 11048608) // S key
 		{
 			imageCorrector.SaveSettings();
 		}
-		else if (temp == 112) // P on windows
+		else if (temp == 112 || 1048688) // P 
 		{
 			paused = !paused;
 		}
-		else if( temp == 113) // Q on windows
+		else if( temp == 113 || temp == 1048689) // Q
 		{
 			break;
 		}
