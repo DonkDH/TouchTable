@@ -15,6 +15,8 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage )
 {
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
+	cv::imshow("Adjusted Image", adjustedImage);
+
 	CalculateCurrentBlobs(adjustedImage, false, true);
 }
 
@@ -43,6 +45,10 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 	cv::RetrievalModes retrievalMode = findHoles ? cv::RetrievalModes::RETR_LIST : cv::RetrievalModes::RETR_EXTERNAL;
 	cv::ContourApproximationModes contourApproximation = useApproximation ? cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE : cv::ContourApproximationModes::CHAIN_APPROX_NONE;
 	cv::findContours(inputImage, blobs, retrievalMode, contourApproximation);
-	
+
+	if (blobs.size() > 0)
+	{
+		std::cout << "Blobs: " << blobs.size();
+	}
 }
 

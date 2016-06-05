@@ -18,8 +18,13 @@ public:
 
 	std::vector<cv::Point2f> GetCorrectionCordinates() { return m_points; };
 
+	cv::Mat GetCurrentImage();
+
 private:
 	cv::Mat SharpenImage(cv::Mat source);
+
+private:
+	cv::Mat m_currentImage;
 
 	std::vector<cv::Point2f> m_points;
 	int m_currentIndex = -1;

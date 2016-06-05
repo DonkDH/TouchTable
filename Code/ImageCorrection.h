@@ -1,7 +1,6 @@
 #pragma once
 #include "opencv2/opencv.hpp"
 #include "CorrectPerspective.h"
-#include "RealTimeStitcher.h"
 #include "json.hpp"
 #include <fstream>
 
@@ -12,14 +11,15 @@ public:
 	~ImageCorrection();
 	void Init();
 	void Update();
-	void CalculateImageStitch();
 	void SaveSettings();
+
+	cv::Mat GetImageA();
+	cv::Mat GetImageB();
 
 private:
 	cv::VideoCapture OpenCapture(cv::String source, int camera, bool forceCamera = false);
 	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector);
-
-
+	
 	cv::String ReadAllTextFromFile(const char* path);
 	void WrightTextToFile(const char* path, std::string data);
 
@@ -33,9 +33,8 @@ private:
 	cv::Mat m_sourceA;
 	cv::Mat m_sourceB;
 
-	RealTimeStitcher* m_stitcher;
-	bool calculateStich = false;
-
-	bool showEditor = true;
+	bool m_showEditor = false;
+	bool m_showSourceImage = false;
+	bool m_showCurrentImage = true;
 };
 

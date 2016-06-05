@@ -103,6 +103,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 		transformed = SharpenImage(transformed);
 	}
 
+	m_currentImage = transformed.clone();
 	return transformed;
 }
 
@@ -152,6 +153,11 @@ void CorrectPerspective::UpdateInput(int event, int x, int y, int flags)
 				m_points[m_currentIndex].y = m_editorSourceImageSize.y ;
 		}
 	}
+}
+
+cv::Mat CorrectPerspective::GetCurrentImage()
+{
+	return m_currentImage;
 }
 
 cv::Mat CorrectPerspective::SharpenImage(cv::Mat source)

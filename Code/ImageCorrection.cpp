@@ -9,7 +9,6 @@ ImageCorrection::~ImageCorrection()
 {
 	delete m_correctionA;
 	delete m_correctionB;
-	delete m_stitcher;
 }
 
 void ImageCorrection::Init()
@@ -55,8 +54,6 @@ void ImageCorrection::Init()
 		m_correctionA = new CorrectPerspective();
 		m_correctionB = new CorrectPerspective();
 	}
-	m_stitcher = new RealTimeStitcher();
-	
 }
 
 void ImageCorrection::Update()
@@ -66,44 +63,37 @@ void ImageCorrection::Update()
         m_capA >> m_sourceA;
     }
 
-    imshow(m_nameA + " Source", m_sourceA);
+	if( m_showSourceImage )
+		imshow(m_nameA + " Source", m_sourceA);
 
     cv::Mat currentA(m_sourceA);
     currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
 
-    imshow(m_nameA + " current", currentA);	
+	if (m_showCurrentImage)
+		imshow(m_nameA + " current", currentA);
 
     if( m_capB.isOpened() )
     {
         m_capB >> m_sourceB;
     }
 
-    imshow(m_nameB + " Source", m_sourceB);
+	if (m_showSourceImage)
+		imshow(m_nameB + " Source", m_sourceB);
 
     cv::Mat currentB(m_sourceB);
     currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
 
-    imshow(m_nameB + " current", currentB);
+	if(m_showCurrentImage)
+		imshow(m_nameB + " current", currentB);
 
 	cv::Mat images[]{ currentA, currentB };
 	cv::Size sizesimage[]{ cv::Size(currentA.cols, currentA.rows),
 						   cv::Size(currentB.cols, currentB.rows) };
-	if (calculateStich)
-	{
-		m_stitcher->CalculateStich( images, sizesimage, 0.75, 4.0, false);
-		calculateStich = false;
-	}
-
-	if (m_stitcher->CanStich())
-	{
-		cv::Mat compleateOutput = m_stitcher->StichImages(images, sizesimage);
-		imshow("compleateOutput", compleateOutput);
-	}
 }
 
 cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector)
 {
-    if(showEditor)
+    if(m_showEditor)
     {
         corrector->UpdateEditor(sourceName + " Editor", source);
     }
@@ -140,6 +130,16 @@ void ImageCorrection::SaveSettings()
 	WrightTextToFile( "settings.json", exportData.dump());
 }
 
+cv::Mat ImageCorrection::GetImageA()
+{
+	return m_correctionA->GetCurrentImage();
+}
+
+cv::Mat ImageCorrection::GetImageB()
+{
+	return m_correctionB->GetCurrentImage();
+}
+
 cv::String ImageCorrection::ReadAllTextFromFile(const char * path)
 {
 	std::fstream file(path);
@@ -173,11 +173,6 @@ void ImageCorrection::WrightTextToFile(const char * path, std::string data)
 
 		file.close();
 	}
-}
-
-void ImageCorrection::CalculateImageStitch()
-{
-	calculateStich = true;
 }
 
 cv::VideoCapture ImageCorrection::OpenCapture(cv::String source, int camera, bool forceCamera)
