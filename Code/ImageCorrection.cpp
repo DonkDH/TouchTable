@@ -22,7 +22,7 @@ void ImageCorrection::Init()
 		m_sourceB = cv::imread("BFirst.png");
 	}
 
-	cv::String loadedData = ReadAllTextFromFile("settings.json");
+	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
 		nlohmann::json settings = nlohmann::json::parse(loadedData);
@@ -127,7 +127,7 @@ void ImageCorrection::SaveSettings()
 		exportData["pointsB"] = tempStore;
 	}
 
-	WrightTextToFile( "settings.json", exportData.dump());
+	WrightTextToFile(settingsFileName, exportData.dump());
 }
 
 cv::Mat ImageCorrection::GetImageA()
@@ -138,27 +138,6 @@ cv::Mat ImageCorrection::GetImageA()
 cv::Mat ImageCorrection::GetImageB()
 {
 	return m_correctionB->GetCurrentImage();
-}
-
-cv::String ImageCorrection::ReadAllTextFromFile(const char * path)
-{
-	std::fstream file(path);
-
-	std::string line = "";
-	std::string compleateData = "";
-
-	if (file.is_open())
-	{
-		while ( std::getline(file, line) )
-		{
-			compleateData.append(line);
-			compleateData.append("\n");
-		}
-
-		file.close();
-	}
-
-	return compleateData;
 }
 
 void ImageCorrection::WrightTextToFile(const char * path, std::string data)

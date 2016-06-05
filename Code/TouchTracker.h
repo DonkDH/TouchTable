@@ -1,5 +1,7 @@
 #pragma once
 #include <opencv2/opencv.hpp>
+#include "json.hpp"
+#include "Utils.h"
 
 class TouchTracker
 {
@@ -13,10 +15,15 @@ private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
 
+	void LoadSettings();
+
 private:
 	cv::Mat backgroundImage;
 	bool grabBackground = true;
 
 	double m_cutOffThreshhold = 40;
+
+
+	const char* settingsFileName = "Tracking_Settings.json";
 };
 

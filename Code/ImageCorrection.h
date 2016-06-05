@@ -3,6 +3,7 @@
 #include "CorrectPerspective.h"
 #include "json.hpp"
 #include <fstream>
+#include "Utils.h"
 
 class ImageCorrection
 {
@@ -20,7 +21,6 @@ private:
 	cv::VideoCapture OpenCapture(cv::String source, int camera, bool forceCamera = false);
 	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector);
 	
-	cv::String ReadAllTextFromFile(const char* path);
 	void WrightTextToFile(const char* path, std::string data);
 
 private:
@@ -36,5 +36,7 @@ private:
 	bool m_showEditor = false;
 	bool m_showSourceImage = false;
 	bool m_showCurrentImage = true;
+
+	const char* settingsFileName = "Image_Settings.json";
 };
 

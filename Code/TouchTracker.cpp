@@ -4,6 +4,7 @@
 
 TouchTracker::TouchTracker()
 {
+	LoadSettings();
 }
 
 
@@ -48,7 +49,26 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 
 	if (blobs.size() > 0)
 	{
-		std::cout << "Blobs: " << blobs.size();
+		int count = 0;
+		for (int i = 0; i < blobs.size(); ++i)
+		{
+			std::cout << blobs[i].size() << " ";
+		}
+
+		std::cout << "Blobs: " << blobs.size() << "\n \n \n";
+	}
+}
+
+void TouchTracker::LoadSettings()
+{
+	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
+	if (loadedData.length() > 0)
+	{
+		nlohmann::json settings = nlohmann::json::parse(loadedData);
+		if (settings["cutOffThreshhold"].is_number())
+		{
+			m_cutOffThreshhold = settings["cutOffThreshhold"];
+		}
 	}
 }
 

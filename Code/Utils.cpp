@@ -1,18 +1,22 @@
 #include "Utils.h"
 
-
-
-Utils::Utils()
+cv::String Utils::ReadAllTextFromFile(const char * path)
 {
-}
+	std::fstream file(path);
 
+	std::string line = "";
+	std::string compleateData = "";
 
-Utils::~Utils()
-{
-}
+	if (file.is_open())
+	{
+		while (std::getline(file, line))
+		{
+			compleateData.append(line);
+			compleateData.append("\n");
+		}
 
-float Utils::GetTimeInMiliseconds()
-{
-	//TODO do this!
-	return 0.0f;
+		file.close();
+	}
+
+	return compleateData;
 }
