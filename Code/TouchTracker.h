@@ -23,6 +23,7 @@ private:
 
 	double m_cutOffThreshhold = 40;
 	int m_miniumBlobSize = 20;
+	int m_maximumBlobSize = 40;
 
 	const char* settingsFileName = "Tracking_Settings.json";
 };

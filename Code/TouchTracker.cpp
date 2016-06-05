@@ -52,7 +52,7 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 		auto ittor = blobs.begin();
 		while ( ittor != blobs.end())
 		{
-			if (ittor->size() < m_miniumBlobSize)
+			if (ittor->size() < m_miniumBlobSize || ittor->size() > 40 )
 			{
 				// remove smaller blobs
 				blobs.erase(ittor);
@@ -81,6 +81,11 @@ void TouchTracker::LoadSettings()
 		if (settings["miniumBlobSize"].is_number())
 		{
 			m_miniumBlobSize = settings["miniumBlobSize"];
+		}
+
+		if (settings["maximumBlobSize"].is_number())
+		{
+			m_maximumBlobSize = settings["maximumBlobSize"];
 		}
 	}
 }
