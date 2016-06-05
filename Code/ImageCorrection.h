@@ -33,8 +33,8 @@ private:
 	cv::Mat m_sourceA;
 	cv::Mat m_sourceB;
 
-	bool m_showEditor = false;
-	bool m_showSourceImage = false;
+	bool m_showEditor = true;
+	bool m_showSourceImage = true;
 	bool m_showCurrentImage = true;
 
 	const char* settingsFileName = "Image_Settings.json";
