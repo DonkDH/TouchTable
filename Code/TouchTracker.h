@@ -15,6 +15,8 @@ private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
 
+	cv::Size GetSizeOfBlob( std::vector<cv::Point> blob );
+
 	void LoadSettings();
 
 private:
@@ -24,6 +26,9 @@ private:
 	double m_cutOffThreshhold = 40;
 	int m_miniumBlobSize = 20;
 	int m_maximumBlobSize = 40;
+
+	int m_miniumBlobWidth = 20;
+	int m_maximumBlobHeight = 40;
 
 	const char* settingsFileName = "Tracking_Settings.json";
 };
