@@ -59,14 +59,14 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 				std::cout << "Blob Size: " << blobSize.width << ", " << blobSize.height << " - ";
 
 				// remove smaller blobs
-				if (  ( blobSize.height < m_miniumBlobSize && blobSize.height > m_maximumBlobSize )
-				   && ( blobSize.width < m_miniumBlobSize && blobSize.width > m_maximumBlobSize ) )
+				if (  ( blobSize.height > m_miniumBlobSize && blobSize.height < m_maximumBlobSize )
+				   && ( blobSize.width > m_miniumBlobSize && blobSize.width < m_maximumBlobSize ) )
 				{
-					blobs.erase(ittor);
+					++ittor;
 				}
 				else
 				{
-					++ittor;
+					blobs.erase(ittor);
 				}
 			}
 			//else
