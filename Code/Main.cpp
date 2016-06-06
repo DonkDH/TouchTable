@@ -19,7 +19,8 @@ int main(int argc, char** argv)
     bool paused = false;
 	bool updateTouches = false;
 	int64 start = 0;
-	int64 end = 0;
+	int64 autoStartTime = cv::getTickCount();
+
 	while (true)
 	{
 		start = cv::getTickCount();
@@ -31,6 +32,14 @@ int main(int argc, char** argv)
 
 			if(updateTouches )
 				touchTrackerA.UpdateTracking(imageCorrector.GetImageA());
+			else
+			{
+				double current = ((double)cv::getTickCount() - autoStartTime) / cv::getTickFrequency();
+				if (current > 2)
+				{
+					updateTouches = true;
+				}
+			}
 
 		if (temp == 1048608 || temp == 32) // space bar
 		{
