@@ -18,8 +18,11 @@ int main(int argc, char** argv)
 
     bool paused = false;
 	bool updateTouches = false;
+	int64 start = 0;
+	int64 end = 0;
 	while (true)
 	{
+		start = cv::getTickCount();
 		int temp = waitKey(30);
 		if( temp >= 0 )
 			std::cout << temp << "\n";
@@ -46,6 +49,9 @@ int main(int argc, char** argv)
 		{
 			break;
 		}
+
+		double time = ((double)cv::getTickCount() - start) / cv::getTickFrequency();
+		std::cout << "\n\n\nFull Frame Time: " << time << "\n\n\n";
 	}
 
 	destroyAllWindows();
