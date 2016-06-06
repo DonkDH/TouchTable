@@ -9,5 +9,11 @@ class Utils
 {
 public:
 	static cv::String ReadAllTextFromFile(const char * path);
+
+	static void StartTimer();
+	static double GetTime(const bool print = false);
+
+private:
+	static int64 m_timerSart;
 };
 

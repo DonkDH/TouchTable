@@ -53,7 +53,7 @@ void CorrectPerspective::UpdateEditor(cv::String windowName, cv::Mat source)
 cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 {
 	cv::Point2f sourceImageSize(source.cols, source.rows);
-
+	
 	cv::Mat sourceImageCpy(cv::Size(sourceImageSize.x * 2, sourceImageSize.y * 2), CV_8UC3, cv::Scalar(0, 0, 0));
 
 	cv::Mat dst = sourceImageCpy(cv::Rect(sourceImageSize.x / 2,
@@ -104,6 +104,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 	}
 
 	m_currentImage = transformed.clone();
+
 	return transformed;
 }
 

@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 #include "ImageCorrection.h"
-#include"TouchTracker.h"
+#include "TouchTracker.h"
+#include "Utils.h"
 
 using namespace cv;
 using namespace std;
@@ -20,10 +21,10 @@ int main(int argc, char** argv)
 	bool updateTouches = false;
 	int64 start = 0;
 	int64 autoStartTime = cv::getTickCount();
-
+	int fps = 0;
+	Utils::StartTimer();
 	while (true)
 	{
-		start = cv::getTickCount();
 		int temp = waitKey(30);
 		if( temp >= 0 )
 			std::cout << temp << "\n";
@@ -59,8 +60,15 @@ int main(int argc, char** argv)
 			break;
 		}
 
-		double time = ((double)cv::getTickCount() - start) / cv::getTickFrequency();
-		std::cout << "\n\n\nFull Frame Time: " << time << "\n\n\n";
+		start += Utils::GetTime();
+		++fps;
+		if (start >= 1)
+		{
+			std::cout << "FPS: " << fps << "\n";
+			fps = 0;
+			start = 0;
+			Utils::StartTimer();
+		}
 	}
 
 	destroyAllWindows();

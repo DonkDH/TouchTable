@@ -87,6 +87,7 @@ void ImageCorrection::Update()
 	if (m_showCurrentImage)
 		imshow(m_nameA + " current", currentA);
 
+
     if( m_capB.isOpened() )
     {
         m_capB >> m_sourceB;
@@ -104,6 +105,7 @@ void ImageCorrection::Update()
 	cv::Mat images[]{ currentA, currentB };
 	cv::Size sizesimage[]{ cv::Size(currentA.cols, currentA.rows),
 						   cv::Size(currentB.cols, currentB.rows) };
+	
 }
 
 cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector)
@@ -112,7 +114,7 @@ cv::Mat ImageCorrection::UpdateCorrectionPerspective(cv::String sourceName, cv::
     {
         corrector->UpdateEditor(sourceName + " Editor", source);
     }
-    return corrector->UpdatePerspective(source, true);
+    return corrector->UpdatePerspective(source, false);
 }
 
 void ImageCorrection::SaveSettings()
