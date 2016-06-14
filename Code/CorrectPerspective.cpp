@@ -161,7 +161,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 
 	m_currentImage = transformed.clone();
 
-	return transformed;
+	return source;
 }
 
 void CorrectPerspective::CallBackFunc(int event, int x, int y, int flags, void* userData)
