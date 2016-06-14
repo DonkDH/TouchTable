@@ -17,7 +17,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage )
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
 	cv::imshow("Adjusted Image", adjustedImage);
-
+	
 	CalculateCurrentBlobs(adjustedImage, false, true);
 }
 

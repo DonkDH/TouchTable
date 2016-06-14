@@ -33,7 +33,9 @@ double Utils::GetTime(const bool print)
 	double time = ((double)cv::getTickCount() - m_timerSart) / cv::getTickFrequency();
 	if (print)
 	{
-		std::cout << "\n\n\nFull Frame Time: " << time << "\n\n\n";
+		float temp = 1.0f / 30.0f;
+
+		std::cout << "\n\n\nFull Frame Time: " << (temp - time) << "\n\n\n";
 	}
 	return time;
 }

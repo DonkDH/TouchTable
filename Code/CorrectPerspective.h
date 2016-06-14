@@ -30,5 +30,8 @@ private:
 	std::vector<cv::Point2f> m_points;
 	int m_currentIndex = -1;
 	cv::Point2f m_editorSourceImageSize;
+
+	cv::Mat transformation_x, transformation_y;
+	bool m_calculated = false;
 };
 

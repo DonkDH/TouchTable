@@ -19,20 +19,28 @@ int main(int argc, char** argv)
 
     bool paused = false;
 	bool updateTouches = false;
-	int64 start = 0;
-	int64 autoStartTime = cv::getTickCount();
+	int64 fpsTime = 0;
+	int64 fpsTickCount = cv::getTickCount();
 	int fps = 0;
-	Utils::StartTimer();
+
+	int64 autoStartTime = cv::getTickCount();
+
 	while (true)
 	{
-		int temp = waitKey(30);
+		int temp = waitKey(1);
+
+		
+
 		if( temp >= 0 )
 			std::cout << temp << "\n";
 
+			Utils::StartTimer();
         	imageCorrector.Update();
 
-			if(updateTouches )
+			if (updateTouches)
+			{
 				touchTrackerA.UpdateTracking(imageCorrector.GetImageA());
+			}
 			else
 			{
 				double current = ((double)cv::getTickCount() - autoStartTime) / cv::getTickFrequency();
@@ -60,15 +68,17 @@ int main(int argc, char** argv)
 			break;
 		}
 
-		start += Utils::GetTime();
+		fpsTime += ((double)cv::getTickCount() - fpsTickCount) / cv::getTickFrequency();
 		++fps;
-		if (start >= 1)
+		if (fpsTime >= 1)
 		{
-			std::cout << "FPS: " << fps << "\n";
+			std::cout << "\nFPS: " << fps << "\n";
 			fps = 0;
-			start = 0;
-			Utils::StartTimer();
+			fpsTime = 0;
+			fpsTickCount = cv::getTickCount();
 		}
+
+
 	}
 
 	destroyAllWindows();

@@ -73,15 +73,19 @@ void ImageCorrection::Init()
 
 void ImageCorrection::Update()
 {
+
+
     if( m_capA.isOpened() )
     {
         m_capA >> m_sourceA;
     }
 
+
 	if( m_showSourceImage )
 		imshow(m_nameA + " Source", m_sourceA);
 
     cv::Mat currentA(m_sourceA);
+
     currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
 
 	if (m_showCurrentImage)
@@ -97,7 +101,7 @@ void ImageCorrection::Update()
 		imshow(m_nameB + " Source", m_sourceB);
 
     cv::Mat currentB(m_sourceB);
-    currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
+    //currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
 
 	if(m_showCurrentImage)
 		imshow(m_nameB + " current", currentB);
