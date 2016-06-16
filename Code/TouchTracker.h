@@ -9,7 +9,7 @@ public:
 	TouchTracker();
 	~TouchTracker();
 
-	void UpdateTracking( cv::Mat inputImage );
+	void UpdateTracking( cv::Mat inputImage, cv::String name);
 
 private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
