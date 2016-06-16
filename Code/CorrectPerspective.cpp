@@ -159,7 +159,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 		transformed = SharpenImage(transformed);
 	}
 
-	m_currentImage = transformed.clone();
+	m_currentImage = source.clone();
 
 	return source;
 }
