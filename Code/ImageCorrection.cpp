@@ -63,6 +63,16 @@ void ImageCorrection::Init()
 		{
 			m_showCurrentImage = settings["showCurrentImage"];
 		}
+
+		if (settings["cameraAngleA"].is_number())
+		{
+			m_cameraAngleA = settings["cameraAngleA"];
+		}
+
+		if (settings["cameraAngleB"].is_number())
+		{
+			m_cameraAngleB = settings["cameraAngleB"];
+		}
 	}
 	else
 	{
@@ -78,16 +88,14 @@ void ImageCorrection::Update()
         m_capA >> m_sourceA;
     }
 
-
 	if( m_showSourceImage )
 		imshow(m_nameA + " Source", m_sourceA);
 
-    cv::Mat currentA(m_sourceA);
-
-    //currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
+	m_currentA = Utils::RotateMat(m_sourceA, m_cameraAngleA);
+    //m_currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
 
 	if (m_showCurrentImage)
-		imshow(m_nameA + " current", currentA);
+		imshow(m_nameA + " current", m_currentA);
 
 
     if( m_capB.isOpened() )
@@ -98,15 +106,16 @@ void ImageCorrection::Update()
 	if (m_showSourceImage)
 		imshow(m_nameB + " Source", m_sourceB);
 
-    cv::Mat currentB(m_sourceB);
-    //currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
+	m_currentB = Utils::RotateMat(m_sourceB, m_cameraAngleB);
+
+    //m_currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
 
 	if(m_showCurrentImage)
-		imshow(m_nameB + " current", currentB);
+		imshow(m_nameB + " current", m_currentB);
 
-	cv::Mat images[]{ currentA, currentB };
-	cv::Size sizesimage[]{ cv::Size(currentA.cols, currentA.rows),
-						   cv::Size(currentB.cols, currentB.rows) };
+	cv::Mat images[]{ m_currentA, m_currentB };
+	cv::Size sizesimage[]{ cv::Size(m_currentA.cols, m_currentB.rows),
+						   cv::Size(m_currentB.cols, m_currentA.rows) };
 	
 }
 
@@ -151,20 +160,12 @@ void ImageCorrection::SaveSettings()
 
 cv::Mat ImageCorrection::GetImageA()
 {
-	if (m_correctionA->GetCurrentImage().rows == 0 || m_correctionA->GetCurrentImage().cols == 0)
-	{
-		return m_sourceA;
-	}
-	return m_correctionA->GetCurrentImage();
+	return m_currentA;
 }
 
 cv::Mat ImageCorrection::GetImageB()
 {
-	if (m_correctionB->GetCurrentImage().rows == 0 || m_correctionB->GetCurrentImage().cols == 0)
-	{
-		return m_sourceB;
-	}
-	return m_correctionB->GetCurrentImage();
+	return m_currentB;
 }
 
 void ImageCorrection::WrightTextToFile(const char * path, std::string data)
@@ -199,3 +200,4 @@ cv::VideoCapture ImageCorrection::OpenCapture(cv::String source, int camera, boo
 
 	return cap;
 }
+

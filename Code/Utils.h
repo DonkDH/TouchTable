@@ -12,6 +12,7 @@ public:
 
 	static void StartTimer();
 	static double GetTime(const bool print = false);
+	static cv::Mat RotateMat(cv::Mat source, float angle);
 
 private:
 	static int64 m_timerSart;

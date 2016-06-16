@@ -39,3 +39,20 @@ double Utils::GetTime(const bool print)
 	}
 	return time;
 }
+
+
+cv::Mat Utils::RotateMat(cv::Mat source, float angle)
+{
+	cv::Point2f src_center(source.size() / 2);
+	cv::Mat rot_mat = getRotationMatrix2D(src_center, angle, 1.0);
+
+	cv::Rect rotatedRect = (cv::RotatedRect(src_center, source.size(), angle)).boundingRect();
+
+	rot_mat.at<double>(0, 2) += rotatedRect.width / 2.0 - src_center.x;
+	rot_mat.at<double>(1, 2) += rotatedRect.height / 2.0 - src_center.y;
+
+	cv::Mat dst;
+
+	cv::warpAffine(source, dst, rot_mat, rotatedRect.size());
+	return dst;
+}

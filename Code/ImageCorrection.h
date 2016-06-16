@@ -32,6 +32,11 @@ private:
 	CorrectPerspective* m_correctionB;
 	cv::Mat m_sourceA;
 	cv::Mat m_sourceB;
+	cv::Mat m_currentA;
+	cv::Mat m_currentB;
+
+	float m_cameraAngleA = 0;
+	float m_cameraAngleB = 0;
 
 	bool m_showEditor = true;
 	bool m_showSourceImage = true;

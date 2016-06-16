@@ -29,8 +29,6 @@ int main(int argc, char** argv)
 	{
 		int temp = waitKey(1);
 
-		
-
 		if( temp >= 0 )
 			std::cout << temp << "\n";
 
