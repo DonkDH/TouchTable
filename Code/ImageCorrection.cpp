@@ -73,8 +73,6 @@ void ImageCorrection::Init()
 
 void ImageCorrection::Update()
 {
-
-
     if( m_capA.isOpened() )
     {
         m_capA >> m_sourceA;
@@ -86,7 +84,7 @@ void ImageCorrection::Update()
 
     cv::Mat currentA(m_sourceA);
 
-    currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
+    //currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
 
 	if (m_showCurrentImage)
 		imshow(m_nameA + " current", currentA);
@@ -153,11 +151,19 @@ void ImageCorrection::SaveSettings()
 
 cv::Mat ImageCorrection::GetImageA()
 {
+	if (m_correctionA->GetCurrentImage().rows == 0 || m_correctionA->GetCurrentImage().cols == 0)
+	{
+		return m_sourceA;
+	}
 	return m_correctionA->GetCurrentImage();
 }
 
 cv::Mat ImageCorrection::GetImageB()
 {
+	if (m_correctionB->GetCurrentImage().rows == 0 || m_correctionB->GetCurrentImage().cols == 0)
+	{
+		return m_sourceB;
+	}
 	return m_correctionB->GetCurrentImage();
 }
 

@@ -74,7 +74,7 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 	cv::Mat transformMatrix = cv::getPerspectiveTransform(m_points, outputPoint);
 	cv::Mat transformed = cv::Mat::zeros(sourceImageCpy.rows, sourceImageCpy.cols, CV_8UC3);
 
-	//cv::warpPerspective(sourceImageCpy, transformed, transformMatrix, sourceImageCpy.size());
+	cv::warpPerspective(sourceImageCpy, transformed, transformMatrix, sourceImageCpy.size());
 	
 	//if (!m_calculated)
 	//{
@@ -159,9 +159,9 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 		transformed = SharpenImage(transformed);
 	}
 
-	m_currentImage = source.clone();
+	m_currentImage = transformed.clone();
 
-	return source;
+	return transformed;
 }
 
 void CorrectPerspective::CallBackFunc(int event, int x, int y, int flags, void* userData)
