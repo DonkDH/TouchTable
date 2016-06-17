@@ -20,7 +20,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	TrackObjects(adjustedImage, name);
 	
-	CalculateCurrentBlobs(adjustedImage, false, true);
+	//CalculateCurrentBlobs(adjustedImage, false, true);
 }
 
 cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
@@ -50,7 +50,7 @@ cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
 	return grayImage;
 }
 
-void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
+void TouchTracker::TrackObjects( cv::Mat currentFrame, cv::String name )
 {
 	if (m_lastFrame.rows == 0 || m_lastFrame.cols == 0)
 	{
@@ -63,8 +63,8 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 	std::vector< std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	//find contours of filtered image using openCV findContours function
-	findContours(differenceImage, contours, hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
-	//cv::findContours(differenceImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);// retrieves external contours
+	cv::findContours(differenceImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE ); // retrieves all contours
+	//cv::findContours(differenceImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
 
 	bool objectDetected = false;
 	if (contours.size()>0)
@@ -75,31 +75,32 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 	if (objectDetected) {
 		std::cout << "Moving Blobs found: " << contours.size();
 
+		int count = 0;
 		bool didSomething = false;
 		for (int i = 0; i < contours.size(); ++i)
 		{
 			if (contours[i].size() > m_miniumBlobPoints)
 			{
 				didSomething = true;
+				++count;
 
 				cv::Rect rect = cv::boundingRect(contours[i]);
 				int x = rect.x + rect.width / 2;
 				int y = rect.y + rect.height / 2;
 
-				cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(255, 255, 0), 2);
-				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(255, 255, 0), 2);
-				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(255, 255, 0), 2);
-				cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(255, 255, 0), 2);
-				cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 0), 2);
+				cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(255, 255, 255), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(255, 255, 255), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(255, 255, 255), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(255, 255, 255), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 255), 2);
 			}
 		}
 		if (didSomething)
 		{
 			cv::imshow(name + " Tracked", differenceImage);
+			std::cout << "\n" << "Count: " << count << "\n";
 		}
 	}
-
-	
 
 	m_lastFrame = currentFrame.clone();
 }
