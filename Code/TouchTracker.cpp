@@ -63,8 +63,8 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 	std::vector< std::vector<cv::Point> > contours;
 	std::vector<cv::Vec4i> hierarchy;
 	//find contours of filtered image using openCV findContours function
-	//findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
-	cv::findContours(differenceImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);// retrieves external contours
+	findContours(differenceImage, contours, hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
+	//cv::findContours(differenceImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);// retrieves external contours
 
 	bool objectDetected = false;
 	if (contours.size()>0)
@@ -82,10 +82,10 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 			int y = rect.y + rect.height / 2;
 
 			cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(0, 255, 0), 2);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(0, 255, 0), 2);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(0, 255, 0), 2);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(0, 255, 0), 2);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(0, 255, 0), 2);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(255, 255, 0), 5);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(255, 255, 0), 5);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(255, 255, 0), 5);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 0), 5);
 		}
 
 		cv::imshow(name + " Tracked", differenceImage);
