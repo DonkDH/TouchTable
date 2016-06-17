@@ -75,20 +75,28 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 	if (objectDetected) {
 		std::cout << "Moving Blobs found: " << contours.size();
 
+		bool didSomething = false;
 		for (int i = 0; i < contours.size(); ++i)
 		{
-			cv::Rect rect = cv::boundingRect(contours[i]);
-			int x = rect.x + rect.width / 2;
-			int y = rect.y + rect.height / 2;
+			if (contours[i].size() > m_miniumBlobPoints)
+			{
+				didSomething = true;
 
-			cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(0, 255, 0), 2);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(255, 255, 0), 5);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(255, 255, 0), 5);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(255, 255, 0), 5);
-			cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 0), 5);
+				cv::Rect rect = cv::boundingRect(contours[i]);
+				int x = rect.x + rect.width / 2;
+				int y = rect.y + rect.height / 2;
+
+				cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(255, 255, 0), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(255, 255, 0), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(255, 255, 0), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(255, 255, 0), 2);
+				cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 0), 2);
+			}
 		}
-
-		cv::imshow(name + " Tracked", differenceImage);
+		if (didSomething)
+		{
+			cv::imshow(name + " Tracked", differenceImage);
+		}
 	}
 
 	
