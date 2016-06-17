@@ -16,7 +16,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 {
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
-//	cv::imshow(name, adjustedImage);
+	cv::imshow(name, adjustedImage);
 
 	TrackObjects(adjustedImage, name);
 	
@@ -87,9 +87,11 @@ void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
 			cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(0, 255, 0), 2);
 			cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(0, 255, 0), 2);
 		}
+
+		cv::imshow(name + " Tracked", differenceImage);
 	}
 
-	cv::imshow(name + " Tracked", differenceImage);
+	
 
 	m_lastFrame = currentFrame.clone();
 }
