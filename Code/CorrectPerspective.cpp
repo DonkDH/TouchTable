@@ -74,58 +74,59 @@ cv::Mat CorrectPerspective::UpdatePerspective(cv::Mat source, bool sharpenImage)
 	cv::Mat transformMatrix = cv::getPerspectiveTransform(m_points, outputPoint);
 	cv::Mat transformed = cv::Mat::zeros(sourceImageCpy.rows, sourceImageCpy.cols, CV_8UC3);
 
-	cv::warpPerspective(sourceImageCpy, transformed, transformMatrix, sourceImageCpy.size());
+	//cv::warpPerspective(sourceImageCpy, transformed, transformMatrix, sourceImageCpy.size());
 	
-	//if (!m_calculated)
-	//{
-	//	// Since the camera won't be moving, let's pregenerate the remap LUT
-	//	cv::Mat inverseTransMatrix;
-	//	cv::invert(transformMatrix, inverseTransMatrix);
+	if (!m_calculated)
+	{
+		// Since the camera won't be moving, let's pregenerate the remap LUT
+		cv::Mat inverseTransMatrix;
+		cv::invert(transformMatrix, inverseTransMatrix);
 
-	//	// Generate the warp matrix
-	//	cv::Mat map_x, map_y, srcTM;
-	//	srcTM = inverseTransMatrix.clone(); // If WARP_INVERSE, set srcTM to transformationMatrix
+		// Generate the warp matrix
+		cv::Mat map_x, map_y, srcTM;
+		srcTM = inverseTransMatrix.clone(); // If WARP_INVERSE, set srcTM to transformationMatrix
 
-	//	map_x.create(sourceImageCpy.size(), CV_32FC1);
-	//	map_y.create(sourceImageCpy.size(), CV_32FC1);
+		map_x.create(sourceImageCpy.size(), CV_32FC1);
+		map_y.create(sourceImageCpy.size(), CV_32FC1);
 
-	//	double M11, M12, M13, M21, M22, M23, M31, M32, M33;
-	//	M11 = srcTM.at<double>(0, 0);
-	//	M12 = srcTM.at<double>(0, 1);
-	//	M13 = srcTM.at<double>(0, 2);
-	//	M21 = srcTM.at<double>(1, 0);
-	//	M22 = srcTM.at<double>(1, 1);
-	//	M23 = srcTM.at<double>(1, 2);
-	//	M31 = srcTM.at<double>(2, 0);
-	//	M32 = srcTM.at<double>(2, 1);
-	//	M33 = srcTM.at<double>(2, 2);
+		double M11, M12, M13, M21, M22, M23, M31, M32, M33;
+		M11 = srcTM.at<double>(0, 0);
+		M12 = srcTM.at<double>(0, 1);
+		M13 = srcTM.at<double>(0, 2);
+		M21 = srcTM.at<double>(1, 0);
+		M22 = srcTM.at<double>(1, 1);
+		M23 = srcTM.at<double>(1, 2);
+		M31 = srcTM.at<double>(2, 0);
+		M32 = srcTM.at<double>(2, 1);
+		M33 = srcTM.at<double>(2, 2);
 
-	//	for (int y = 0; y < sourceImageCpy.rows; y++) {
-	//		double fy = (double)y;
-	//		for (int x = 0; x < sourceImageCpy.cols; x++) {
-	//			double fx = (double)x;
-	//			double w = ((M31 * fx) + (M32 * fy) + M33);
-	//			w = w != 0.0f ? 1.f / w : 0.0f;
-	//			float new_x = (float)((M11 * fx) + (M12 * fy) + M13) * w;
-	//			float new_y = (float)((M21 * fx) + (M22 * fy) + M23) * w;
-	//			map_x.at<float>(y, x) = new_x;
-	//			map_y.at<float>(y, x) = new_y;
-	//		}
-	//	}
+		for (int y = 0; y < sourceImageCpy.rows; y++) {
+			double fy = (double)y;
+			for (int x = 0; x < sourceImageCpy.cols; x++) {
+				double fx = (double)x;
+				double w = ((M31 * fx) + (M32 * fy) + M33);
+				w = w != 0.0f ? 1.f / w : 0.0f;
+				float new_x = (float)((M11 * fx) + (M12 * fy) + M13) * w;
+				float new_y = (float)((M21 * fx) + (M22 * fy) + M23) * w;
+				map_x.at<float>(y, x) = new_x;
+				map_y.at<float>(y, x) = new_y;
+			}
+		}
 
-	//	// This creates a fixed-point representation of the mapping resulting in ~4% CPU savings
+		// This creates a fixed-point representation of the mapping resulting in ~4% CPU savings
 
-	//	transformation_x.create(sourceImageCpy.size(), CV_16SC2);
-	//	transformation_y.create(sourceImageCpy.size(), CV_16UC1);
+		transformation_x.create(sourceImageCpy.size(), CV_16SC2);
+		transformation_y.create(sourceImageCpy.size(), CV_16UC1);
 
-	//	cv::convertMaps(map_x, map_y, transformation_x, transformation_y, false);
-	//	m_calculated = true;
-	//}
-	//// If the fixed-point representation causes issues, replace it with this code
-	////transformation_x = map_x.clone();
-	////transformation_y = map_y.clone();
+		cv::convertMaps(map_x, map_y, transformation_x, transformation_y, false);
+		m_calculated = true;
+	}
+	// If the fixed-point representation causes issues, replace it with this code
+	//transformation_x = map_x.clone();
+	//transformation_y = map_y.clone();
 
-	//cv::remap(sourceImageCpy, transformed, transformation_x, transformation_y, CV_INTER_LINEAR);
+	
+	cv::remap(sourceImageCpy, transformed, transformation_x, transformation_y, CV_INTER_LINEAR);
 	
 	
 	//Utils::GetTime(true);

@@ -1,5 +1,6 @@
 #pragma once
 #include <opencv2/opencv.hpp>
+#include <vector>
 #include "json.hpp"
 #include "Utils.h"
 
@@ -13,6 +14,7 @@ public:
 
 private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
+	void TrackObjects(cv::Mat currentFrame, cv::String name);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
 
 	cv::Size GetSizeOfBlob( std::vector<cv::Point> blob );
@@ -21,6 +23,9 @@ private:
 
 private:
 	cv::Mat backgroundImage;
+
+	cv::Mat m_lastFrame;
+
 	bool grabBackground = true;
 
 	double m_cutOffThreshhold = 40;

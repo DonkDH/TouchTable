@@ -91,8 +91,9 @@ void ImageCorrection::Update()
 	if( m_showSourceImage )
 		imshow(m_nameA + " Source", m_sourceA);
 
-	m_currentA = Utils::RotateMat(m_sourceA, m_cameraAngleA);
-    //m_currentA = UpdateCorrectionPerspective( m_nameA, currentA, m_correctionA );
+	m_currentA = m_sourceA.clone();
+   // m_currentA = UpdateCorrectionPerspective( m_nameA, m_currentA, m_correctionA );
+	m_currentA = Utils::RotateMat(m_currentA, m_cameraAngleA);
 
 	if (m_showCurrentImage)
 		imshow(m_nameA + " current", m_currentA);
@@ -105,10 +106,10 @@ void ImageCorrection::Update()
 
 	if (m_showSourceImage)
 		imshow(m_nameB + " Source", m_sourceB);
-
-	m_currentB = Utils::RotateMat(m_sourceB, m_cameraAngleB);
-
-    //m_currentB = UpdateCorrectionPerspective( m_nameB, currentB, m_correctionB );
+	
+	m_currentB = m_sourceB.clone();
+  //  m_currentB = UpdateCorrectionPerspective( m_nameB, m_currentB, m_correctionB );
+	m_currentB = Utils::RotateMat(m_currentB, m_cameraAngleB);
 
 	if(m_showCurrentImage)
 		imshow(m_nameB + " current", m_currentB);

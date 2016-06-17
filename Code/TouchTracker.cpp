@@ -16,7 +16,9 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 {
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
-	cv::imshow(name, adjustedImage);
+//	cv::imshow(name, adjustedImage);
+
+	TrackObjects(adjustedImage, name);
 	
 	CalculateCurrentBlobs(adjustedImage, false, true);
 }
@@ -25,6 +27,15 @@ cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
 {
 	cv::Mat grayImage;
 	cvtColor(inputImage, grayImage, CV_BGR2GRAY);
+
+	if (!grabBackground)
+	{
+		if (inputImage.cols != backgroundImage.cols ||
+			inputImage.rows != backgroundImage.rows)
+		{
+			grabBackground = true;
+		}
+	}
 
 	if (grabBackground)
 	{
@@ -37,6 +48,50 @@ cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
 	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
 
 	return grayImage;
+}
+
+void TouchTracker::TrackObjects(cv::Mat currentFrame, cv::String name)
+{
+	if (m_lastFrame.rows == 0 || m_lastFrame.cols == 0)
+	{
+		m_lastFrame = currentFrame.clone();
+	}
+
+	cv::Mat differenceImage;
+	cv::absdiff(currentFrame, m_lastFrame, differenceImage);
+
+	std::vector< std::vector<cv::Point> > contours;
+	std::vector<cv::Vec4i> hierarchy;
+	//find contours of filtered image using openCV findContours function
+	//findContours(temp,contours,hierarchy,CV_RETR_CCOMP,CV_CHAIN_APPROX_SIMPLE );// retrieves all contours
+	cv::findContours(differenceImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);// retrieves external contours
+
+	bool objectDetected = false;
+	if (contours.size()>0)
+		objectDetected = true;
+	else
+		objectDetected = false;
+
+	if (objectDetected) {
+		std::cout << "Moving Blobs found: " << contours.size();
+
+		for (int i = 0; i < contours.size(); ++i)
+		{
+			cv::Rect rect = cv::boundingRect(contours[i]);
+			int x = rect.x + rect.width / 2;
+			int y = rect.y + rect.height / 2;
+
+			cv::circle(differenceImage, cv::Point(x, y), 20, cv::Scalar(0, 255, 0), 2);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y - 25), cv::Scalar(0, 255, 0), 2);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x, y + 25), cv::Scalar(0, 255, 0), 2);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x - 25, y), cv::Scalar(0, 255, 0), 2);
+			cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(0, 255, 0), 2);
+		}
+	}
+
+	cv::imshow(name + " Tracked", differenceImage);
+
+	m_lastFrame = currentFrame.clone();
 }
 
 void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation)
