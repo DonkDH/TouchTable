@@ -73,7 +73,6 @@ void TouchTracker::TrackObjects( cv::Mat currentFrame, cv::String name )
 		objectDetected = false;
 
 	if (objectDetected) {
-		std::cout << "Moving Blobs found: " << contours.size();
 
 		int count = 0;
 		bool didSomething = false;
