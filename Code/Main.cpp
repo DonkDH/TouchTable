@@ -49,8 +49,8 @@ void RecordVideo()
 
 			int ex = static_cast<int>(capA.get(CV_CAP_PROP_FOURCC));
 			
-			writerA = cv::VideoWriter("AFirst.avi", capA.get(CV_CAP_PROP_FOURCC), capA.get(CV_CAP_PROP_FPS), S, true);
-			writerB = cv::VideoWriter("BFirst.avi", capB.get(CV_CAP_PROP_FOURCC), capB.get(CV_CAP_PROP_FPS), S, true);
+			writerA = cv::VideoWriter("AFirst.avi", capA.get(CV_CAP_PROP_FOURCC), 10, S, true);
+			writerB = cv::VideoWriter("BFirst.avi", capB.get(CV_CAP_PROP_FOURCC), 10, S, true);
 
 			isRecodring = true;
 		}
