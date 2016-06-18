@@ -46,8 +46,10 @@ void RecordVideo()
 		{
 
 			cv::Size S = cv::Size((int)capA.get(CV_CAP_PROP_FRAME_WIDTH), (int)capA.get(CV_CAP_PROP_FRAME_HEIGHT));
-			writerA = cv::VideoWriter("AFirst.avi", capA.get(CV_CAP_PROP_FOURCC), capA.get(CV_CAP_PROP_FPS), S, true);
-			writerB = cv::VideoWriter("BFirst.avi", capB.get(CV_CAP_PROP_FOURCC), capB.get(CV_CAP_PROP_FPS), S, true);
+
+			int ex = static_cast<int>(capA.get(CV_CAP_PROP_FOURCC));
+			writerA = cv::VideoWriter("AFirst.avi", ex, capA.get(CV_CAP_PROP_FPS), S, true);
+			writerB = cv::VideoWriter("BFirst.avi", ex, capB.get(CV_CAP_PROP_FPS), S, true);
 
 			isRecodring = true;
 		}
