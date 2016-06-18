@@ -9,8 +9,68 @@
 using namespace cv;
 using namespace std;
 
+void RecordVideo()
+{
+	cv::VideoCapture capA(0);
+	cv::VideoCapture capB(1);
+	cv::VideoWriter writerA;
+	cv::VideoWriter writerB;
+
+	if (!capA.isOpened() || !capB.isOpened() )
+	{
+		return;
+	}
+
+	
+	bool isRecodring = false;
+	cv::Mat frameA;
+	cv::Mat frameB;
+
+	while (true)
+	{
+		int temp = waitKey(1);
+
+		capA >> frameA;
+		capB >> frameB;
+
+		cv::imshow("Video Recording A", frameA);
+		cv::imshow("Video Recording B", frameB);
+
+		if (isRecodring)
+		{
+			writerA << frameA;
+			writerB << frameB;
+		}
+
+		if ((temp == 1048608 || temp == 32 ) && !isRecodring) // space bar
+		{
+
+			cv::Size S = cv::Size((int)capA.get(CV_CAP_PROP_FRAME_WIDTH), (int)capA.get(CV_CAP_PROP_FRAME_HEIGHT));
+			writerA = cv::VideoWriter("AFirst.avi", capA.get(CV_CAP_PROP_FOURCC), capA.get(CV_CAP_PROP_FPS), S, true);
+			writerB = cv::VideoWriter("BFirst.avi", capB.get(CV_CAP_PROP_FOURCC), capB.get(CV_CAP_PROP_FPS), S, true);
+
+			isRecodring = true;
+		}
+		else if (temp == 115 || temp == 11048608) // S key
+		{
+			//save vids and close caps
+
+			capA.release();
+			capB.release();
+			break;
+		}
+	}
+}
+
 int main(int argc, char** argv)
 {
+	if (true)
+	{
+		RecordVideo();
+		return 0;
+	}
+
+
     ImageCorrection imageCorrector = ImageCorrection();
     imageCorrector.Init();
 
