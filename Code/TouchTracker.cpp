@@ -26,6 +26,8 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	cv::absdiff(backgroundImage, grayImage, grayImage);
 
+	backgroundImage = grayImage.clone();
+
 	cv::imshow(name, grayImage);
 
 	return;
