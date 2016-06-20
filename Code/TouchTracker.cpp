@@ -14,13 +14,29 @@ TouchTracker::~TouchTracker()
 
 void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 {
+	cv::Mat grayImage;
+	cvtColor(inputImage, grayImage, CV_BGR2GRAY);
+
+	if (inputImage.cols != backgroundImage.cols ||
+		inputImage.rows != backgroundImage.rows)
+	{
+		backgroundImage = grayImage.clone();
+		return;
+	}
+
+	cv::absdiff(backgroundImage, grayImage, grayImage);
+
+	cv::imshow(name, grayImage);
+
+	return;
+
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
 	cv::imshow(name, adjustedImage);
 
 	TrackObjects(adjustedImage, name);
 	
-	//CalculateCurrentBlobs(adjustedImage, false, true);
+	CalculateCurrentBlobs(adjustedImage, false, true);
 }
 
 cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)

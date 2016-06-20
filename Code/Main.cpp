@@ -67,12 +67,6 @@ void RecordVideo()
 
 int main(int argc, char** argv)
 {
-	
-	if (true)
-	{
-		RecordVideo();
-	}
-
     ImageCorrection imageCorrector = ImageCorrection();
     imageCorrector.Init();
 
