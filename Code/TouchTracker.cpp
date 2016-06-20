@@ -30,6 +30,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	backgroundImage = grayImage.clone();
 	
+	cv::threshold(output, output, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
 
 	cv::imshow(name, output);
 
