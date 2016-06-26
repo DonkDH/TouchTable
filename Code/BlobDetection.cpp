@@ -70,7 +70,7 @@ void BlobDetection::Update(cv::Mat inputImage)
 
 	cv::imshow("Blured", grayImage);
 
-	cv::Laplacian(grayImage, grayImage, CV_16S, m_laplacianSize);
+	cv::Laplacian(grayImage, grayImage, CV_8U, m_laplacianSize);
 
 	cv::imshow("Laplacian", grayImage);
 }
