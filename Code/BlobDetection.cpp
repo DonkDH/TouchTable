@@ -83,17 +83,17 @@ void BlobDetection::Update(cv::Mat inputImage)
 	if(m_shouldInvert)
 		cv::bitwise_not(grayImage, grayImage);
 
-	//cv::imshow("Not Blured", grayImage);
+	cv::imshow("Not Blured", grayImage);
 
 	cv::GaussianBlur(grayImage, grayImage, m_blurSize, m_blurSigma);
 
-	//cv::imshow("Blured", grayImage);
+	cv::imshow("Blured", grayImage);
 
 	cv::Laplacian(grayImage, grayImage, CV_8U, m_laplacianSize);
 
-	//cv::imshow("Laplacian", grayImage);
+	cv::imshow("Laplacian", grayImage);
 
 	cv::threshold(grayImage, grayImage, m_laplacianThreshhold, 255, cv::ThresholdTypes::THRESH_TOZERO);
 
-	//cv::imshow("Threasholded", grayImage);
+	cv::imshow("Threasholded", grayImage);
 }
