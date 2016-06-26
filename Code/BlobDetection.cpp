@@ -85,7 +85,7 @@ void BlobDetection::Update(cv::Mat inputImage)
 
 	cv::imshow("Laplacian", grayImage);
 
-	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_TRUNC);
+	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_TOZERO);
 
 	cv::imshow("Threasholded", grayImage);
 }
