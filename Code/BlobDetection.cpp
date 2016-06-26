@@ -53,7 +53,7 @@ void BlobDetection::Init()
 
 		if (settings["laplacianThreshhold"].is_number())
 		{
-			m_laplacianThreshhold = settings["laplacianThreshhold"];
+			m_laplacianThreshhold = settings["laplacianThreshhold"]
 		}
 
 		if (settings["shouldInvert"].is_boolean())
@@ -76,9 +76,9 @@ void BlobDetection::Update(cv::Mat inputImage)
 		return;
 	}
 
-	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
-
 	cv::absdiff(backgroundImage, grayImage, grayImage);
+
+	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
 
 	if(m_shouldInvert)
 		cv::bitwise_not(grayImage, grayImage);
