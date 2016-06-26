@@ -94,15 +94,15 @@ void BlobDetection::Update(cv::Mat inputImage)
 	cv::imshow("Laplacian", grayImage);
 
 	cv::Mat heatMap;
-	cv::applyColorMap(grayImage, heatMap, cv::COLORMAP_HOT);
+	cv::applyColorMap(grayImage, heatMap, cv::COLORMAP_COOL);
 
 	cv::imshow("Laplacian Hot", heatMap);
 
-	cv::threshold(grayImage, grayImage, m_laplacianThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
+	cv::threshold(grayImage, grayImage, m_laplacianThreshhold, 255, cv::ThresholdTypes::THRESH_TOZERO);
 
 	cv::imshow("Threasholded", grayImage);
 
-	cv::applyColorMap(grayImage, heatMap, cv::COLORMAP_HOT);
+	cv::applyColorMap(grayImage, heatMap, cv::COLORMAP_COOL);
 
 	cv::imshow("Threasholded Hot", heatMap);
 
