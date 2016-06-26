@@ -51,10 +51,16 @@ void BlobDetection::Init()
 			m_cutOffThreshhold = settings["cutOffThreshhold"];
 		}
 
+		if (settings["laplacianThreshhold"].is_number())
+		{
+			m_laplacianThreshhold = settings["laplacianThreshhold"];
+		}
+
 		if (settings["shouldInvert"].is_boolean())
 		{
 			m_shouldInvert = settings["shouldInvert"];
 		}
+
 	}
 }
 
@@ -69,6 +75,8 @@ void BlobDetection::Update(cv::Mat inputImage)
 		backgroundImage = grayImage.clone();
 		return;
 	}
+
+	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
 
 	cv::absdiff(backgroundImage, grayImage, grayImage);
 
@@ -85,7 +93,7 @@ void BlobDetection::Update(cv::Mat inputImage)
 
 	cv::imshow("Laplacian", grayImage);
 
-	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_TOZERO);
+	cv::threshold(grayImage, grayImage, m_laplacianThreshhold, 255, cv::ThresholdTypes::THRESH_TOZERO);
 
 	cv::imshow("Threasholded", grayImage);
 }
