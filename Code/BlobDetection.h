@@ -12,6 +12,7 @@ public:
 	void Update(cv::Mat inputImage);
 
 private:
+	cv::Mat backgroundImage;
 	cv::Size m_blurSize = cv::Size(15,15);
 	double m_blurSigma = 6;
 	int m_laplacianSize = 1;

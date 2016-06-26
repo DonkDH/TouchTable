@@ -53,6 +53,15 @@ void BlobDetection::Update(cv::Mat inputImage)
 	cv::Mat grayImage;
 	cv::cvtColor(inputImage, grayImage, CV_BGR2GRAY);
 
+	if (inputImage.cols != backgroundImage.cols ||
+		inputImage.rows != backgroundImage.rows)
+	{
+		backgroundImage = grayImage.clone();
+		return;
+	}
+
+	cv::absdiff(backgroundImage, grayImage, grayImage);
+
 	cv::bitwise_not(grayImage, grayImage);
 
 	cv::imshow("Not Blured", grayImage);
