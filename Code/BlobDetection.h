@@ -16,6 +16,8 @@ private:
 	cv::Size m_blurSize = cv::Size(15,15);
 	double m_blurSigma = 6;
 	int m_laplacianSize = 1;
+	double m_cutOffThreshhold = 40;
+	bool m_shouldInvert = false;
 
 	const char* settingsFileName = "Blob_Settings.json";
 };

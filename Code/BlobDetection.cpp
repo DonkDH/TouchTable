@@ -45,6 +45,16 @@ void BlobDetection::Init()
 			if (m_laplacianSize > 31)
 				m_laplacianSize = 31;
 		}
+
+		if (settings["cutOffThreshhold"].is_number())
+		{
+			m_cutOffThreshhold = settings["cutOffThreshhold"];
+		}
+
+		if (settings["shouldInvert"].is_boolean())
+		{
+			m_shouldInvert = settings["shouldInvert"];
+		}
 	}
 }
 
@@ -62,7 +72,8 @@ void BlobDetection::Update(cv::Mat inputImage)
 
 	cv::absdiff(backgroundImage, grayImage, grayImage);
 
-	cv::bitwise_not(grayImage, grayImage);
+	if(m_shouldInvert)
+		cv::bitwise_not(grayImage, grayImage);
 
 	cv::imshow("Not Blured", grayImage);
 
@@ -73,4 +84,8 @@ void BlobDetection::Update(cv::Mat inputImage)
 	cv::Laplacian(grayImage, grayImage, CV_8U, m_laplacianSize);
 
 	cv::imshow("Laplacian", grayImage);
+
+	cv::threshold(grayImage, grayImage, m_cutOffThreshhold, 255, cv::ThresholdTypes::THRESH_BINARY);
+
+	cv::imshow("Threasholded", grayImage);
 }
