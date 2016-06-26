@@ -10,11 +10,12 @@ TouchTracker::TouchTracker()
 
 TouchTracker::~TouchTracker()
 {
+	ClearTouches();
 }
 
 void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 {
-	cv::Mat grayImage;
+	/*cv::Mat grayImage;
 	cvtColor(inputImage, grayImage, CV_BGR2GRAY);
 
 	if (inputImage.cols != backgroundImage.cols ||
@@ -24,7 +25,6 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 		return;
 	}
 
-	
 	cv::Mat output;
 	cv::absdiff(backgroundImage, grayImage, output);
 
@@ -34,7 +34,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	cv::imshow(name, output);
 
-	return;
+	return;*/
 
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
@@ -141,9 +141,7 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 		{
 			//if (ittor->size() < m_miniumBlobPoints || ittor->size() > m_maximumBlobPoints)
 			{
-				cv::Size blobSize = GetSizeOfBlob( *ittor );
-
-				std::cout << "Blob Size: " << blobSize.width << ", " << blobSize.height << " - ";
+				auto blobSize = GetRectOfBlob( *ittor );
 
 				// remove smaller blobs
 				if (  ( blobSize.height > m_miniumBlobSize && blobSize.height < m_maximumBlobSize )
@@ -161,22 +159,22 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 			//	++ittor;
 			}
 		}
-
-		std::cout << "Blobs: " << blobs.size() << "\n \n \n";
 	}
 }
 
-cv::Size TouchTracker::GetSizeOfBlob(std::vector<cv::Point> blob)
+cv::Rect TouchTracker::GetRectOfBlob(std::vector<cv::Point> blob)
 {
 	if (blob.size() <= 0)
 	{
-		return cv::Size();
+		return cv::Rect();
 	}
 
 	auto ittor = blob.begin();
 	cv::Point2f lowLeft = cv::Point2f(ittor->x, ittor->y);
 	cv::Point2f highRight = lowLeft;
 	++ittor;
+
+
 
 	for (; ittor != blob.end(); ++ittor)
 	{
@@ -187,7 +185,9 @@ cv::Size TouchTracker::GetSizeOfBlob(std::vector<cv::Point> blob)
 		highRight.y = MAX(highRight.y, ittor->y);
 	}
 
-	return cv::Size( (highRight.x - lowLeft.x), (highRight.y - lowLeft.y));
+	return cv::Rect(lowLeft, highRight);
+
+	//return cv::Size( (highRight.x - lowLeft.x), (highRight.y - lowLeft.y));
 }
 
 void TouchTracker::LoadSettings()
@@ -223,3 +223,79 @@ void TouchTracker::LoadSettings()
 	}
 }
 
+void TouchTracker::InitTouches()
+{
+	m_touches = std::vector<Touch*>();
+
+	for (int i = 0; i < 10; ++i)
+	{
+		m_touches.push_back(new Touch());
+	}
+}
+
+void TouchTracker::ClearTouches()
+{
+	auto ittor = m_touches.begin();
+	for (; ittor != m_touches.end(); ++ittor)
+	{
+		delete (*ittor);
+	}
+
+	m_touches.clear();
+}
+
+void TouchTracker::TouchModifiedReset()
+{
+	auto ittor = m_touches.begin();
+	for (; ittor != m_touches.end(); ++ittor)
+	{
+		(*ittor)->m_updatedThisFrame = false;
+	}
+}
+
+Touch* TouchTracker::GetNewTouch()
+{
+	auto ittor = m_touches.begin();
+	for (; ittor != m_touches.end(); ++ittor)
+	{
+		if (!(*ittor)->m_active)
+		{
+			return (*ittor);
+		}
+	}
+
+	auto newTouch = new Touch();
+
+	m_touches.push_back(newTouch);
+
+	return newTouch;
+}
+
+
+bool TouchTracker::GetTouchForBlob(std::vector<cv::Point> blob, Touch* &touch)
+{
+	auto blobSize = GetRectOfBlob(blob);
+
+	auto ittor = m_touches.begin();
+	for (; ittor != m_touches.end(); ++ittor)
+	{
+		if (!(*ittor)->m_active)
+		{
+			if (blobSize.contains((*ittor)->m_location))
+			{
+				auto blobIttor = blob.begin();
+				for (; blobIttor != blob.end(); ++blobIttor)
+				{
+					if (abs(blobIttor->x - (*ittor)->m_location.x) < 0.1 && 
+						abs(blobIttor->y - (*ittor)->m_location.y) < 0.1)
+					{
+						touch = (*ittor);
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}

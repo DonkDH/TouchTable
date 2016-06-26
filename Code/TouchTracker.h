@@ -3,6 +3,7 @@
 #include <vector>
 #include "json.hpp"
 #include "Utils.h"
+#include "Touch.h"
 
 class TouchTracker
 {
@@ -17,9 +18,17 @@ private:
 	void TrackObjects(cv::Mat currentFrame, cv::String name);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
 
-	cv::Size GetSizeOfBlob( std::vector<cv::Point> blob );
+	cv::Rect GetRectOfBlob( std::vector<cv::Point> blob );
 
 	void LoadSettings();
+
+	void InitTouches();
+	void ClearTouches();
+	void TouchModifiedReset();
+	Touch* GetNewTouch();
+
+	bool GetTouchForBlob(std::vector<cv::Point> blob, Touch* &touch);
+		
 
 private:
 	cv::Mat backgroundImage;
@@ -34,6 +43,8 @@ private:
 
 	int m_miniumBlobSize = 20;
 	int m_maximumBlobSize = 40;
+
+	std::vector<Touch*> m_touches;
 
 	const char* settingsFileName = "Tracking_Settings.json";
 };
