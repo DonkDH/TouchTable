@@ -100,6 +100,9 @@ void BlobDetection::Update(cv::Mat inputImage)
 	cv::distanceTransform(grayImage, grayImage, CV_DIST_L2, 3);
 	// Normalize the distance image for range = {0.0, 1.0}
 	// so we can visualize and threshold it
-	cv::normalize(grayImage, grayImage, 0, 1., cv::NORM_MINMAX);
+	cv::normalize(grayImage, grayImage, 0, 1.0, cv::NORM_MINMAX);
 	cv::imshow("Distance Transform Image", grayImage);
+
+	cv::threshold(grayImage, grayImage, 254, 255, cv::ThresholdTypes::THRESH_BINARY);
+	cv::imshow("Really cuious", grayImage);
 }
