@@ -53,6 +53,8 @@ void BlobDetection::Update(cv::Mat inputImage)
 	cv::Mat grayImage;
 	cv::cvtColor(inputImage, grayImage, CV_BGR2GRAY);
 
+	cv::bitwise_not(grayImage, grayImage);
+
 	cv::imshow("Not Blured", grayImage);
 
 	cv::GaussianBlur(grayImage, grayImage, m_blurSize, m_blurSigma);
