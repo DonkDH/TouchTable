@@ -69,6 +69,7 @@ void RecordVideo()
 int main(int argc, char** argv)
 {
 	BlobDetection bDetect = BlobDetection();
+	bDetect.Init();
 
     ImageCorrection imageCorrector = ImageCorrection();
     imageCorrector.Init();

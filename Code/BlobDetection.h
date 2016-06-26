@@ -14,6 +14,7 @@ public:
 private:
 	cv::Size m_blurSize = cv::Size(15,15);
 	double m_blurSigma = 6;
+	int m_laplacianSize = 1;
 
 	const char* settingsFileName = "Blob_Settings.json";
 };

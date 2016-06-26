@@ -36,6 +36,15 @@ void BlobDetection::Init()
 		{
 			m_blurSigma = settings["blurSigma"];
 		}
+
+		if (settings["laplacianSize"].is_number_integer())
+		{
+			m_laplacianSize = settings["laplacianSize"];
+			if (m_laplacianSize % 2 != 1)
+				m_laplacianSize += 1;
+			if (m_laplacianSize > 31)
+				m_laplacianSize = 31;
+		}
 	}
 }
 
@@ -50,7 +59,7 @@ void BlobDetection::Update(cv::Mat inputImage)
 
 	cv::imshow("Blured", grayImage);
 
-	cv::Laplacian(grayImage, grayImage, CV_16S);
+	cv::Laplacian(grayImage, grayImage, CV_16S, m_laplacianSize);
 
 	cv::imshow("Laplacian", grayImage);
 }
