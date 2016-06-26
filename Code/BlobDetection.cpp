@@ -53,7 +53,7 @@ void BlobDetection::Init()
 
 		if (settings["laplacianThreshhold"].is_number())
 		{
-			m_laplacianThreshhold = settings["laplacianThreshhold"]
+			m_laplacianThreshhold = settings["laplacianThreshhold"];
 		}
 
 		if (settings["shouldInvert"].is_boolean())
