@@ -53,7 +53,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 		auto ittor = m_touches.begin();
 		for (; ittor != m_touches.end(); ++ittor)
 		{
-			if ((*ittor)->m_active)
+			//if ((*ittor)->m_active)
 			{
 				auto histItor = (*ittor)->history.begin();
 				for (; histItor != (*ittor)->history.end(); histItor++)
@@ -221,6 +221,8 @@ void TouchTracker::UpdateHungarian()
 
 		currentFrame.push_back(cv::Point( x, y ));
 	}
+
+	std::cout << "curr touch count" << currentFrame << "\n";
 
 	auto output = m_munkres.CalculatePairs(lastFrame, currentFrame);
 
