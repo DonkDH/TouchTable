@@ -222,7 +222,7 @@ void TouchTracker::UpdateHungarian()
 		currentFrame.push_back(cv::Point( x, y ));
 	}
 
-	std::cout << "curr touch count" << currentFrame << "\n";
+	std::cout << "curr touch count" << currentFrame.size() << "\n";
 
 	auto output = m_munkres.CalculatePairs(lastFrame, currentFrame);
 
@@ -235,7 +235,14 @@ void TouchTracker::UpdateHungarian()
 			{
 				if ((*outPutItor).second >= 0 && (*outPutItor).second < currentFrame.size())
 				{
-					m_touches[(*outPutItor).first]->m_location = currentFrame[(*outPutItor).second];
+					auto lastTouchItor = m_touches.begin();
+					for (; lastTouchItor != m_touches.end(); ++lastTouchItor)
+					{
+						if ((*lastTouchItor)->m_location == lastFrame[(*outPutItor).first])
+						{
+							(*lastTouchItor)->m_location = currentFrame[(*outPutItor).second];
+						}
+					}
 				}
 				else
 				{
