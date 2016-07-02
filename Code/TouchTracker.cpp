@@ -58,7 +58,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 				auto histItor = (*ittor)->history.begin();
 				for (; histItor != (*ittor)->history.end(); histItor++)
 				{
-					cv::circle(drawTrail, (*histItor), 2, cv::Scalar(0, 0, 0));
+					cv::circle(drawTrail, (*histItor), 2, cv::Scalar(255, 0, 255));
 				}
 			}
 		}
