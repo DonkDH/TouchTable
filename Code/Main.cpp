@@ -77,7 +77,7 @@ int main(int argc, char** argv)
     imageCorrector.Init();
 
 	TouchTracker touchTrackerA = TouchTracker();
-	TouchTracker touchTrackerB = TouchTracker();
+	//TouchTracker touchTrackerB = TouchTracker();
 
     bool paused = false;
 	bool updateTouches = false;
@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 			if (updateTouches)
 			{
 				touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
-				touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
+				//touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
 				//bDetect.Update(imageCorrector.GetImageA());
 			}
 			else

@@ -125,8 +125,8 @@ std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Poin
 				if (m_matrix[x][y][1] == 1)
 				{
 					std::pair<int, int> p = std::pair<int, int>();
-					p.first = x;
-					p.second = y;
+					p.first = y;
+					p.second = x;
 					returnData.push_back(p);
 				}
 			}
