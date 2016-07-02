@@ -26,7 +26,7 @@ std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Poin
 	std::vector< std::pair<int, int> > returnData = std::vector< std::pair<int, int> >();
 	if ((lastPoints.size() == 0 || currentPoints.size() == 0))
 	{
-		return returnData;
+	//	return returnData;
 	}
 
 	m_currentSize = lastPoints.size();
