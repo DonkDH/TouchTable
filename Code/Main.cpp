@@ -68,14 +68,16 @@ void RecordVideo()
 
 int main(int argc, char** argv)
 {
-	BlobDetection bDetect = BlobDetection();
-	bDetect.Init();
+	int counter = 0;
+
+	//BlobDetection bDetect = BlobDetection();
+	//bDetect.Init();
 
     ImageCorrection imageCorrector = ImageCorrection();
     imageCorrector.Init();
 
-	//TouchTracker touchTrackerA = TouchTracker();
-	//TouchTracker touchTrackerB = TouchTracker();
+	TouchTracker touchTrackerA = TouchTracker();
+	TouchTracker touchTrackerB = TouchTracker();
 
     bool paused = false;
 	bool updateTouches = false;
@@ -97,9 +99,9 @@ int main(int argc, char** argv)
 
 			if (updateTouches)
 			{
-				//touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
-				//touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
-				bDetect.Update(imageCorrector.GetImageA());
+				touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
+				touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
+				//bDetect.Update(imageCorrector.GetImageA());
 			}
 			else
 			{

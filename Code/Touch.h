@@ -13,5 +13,10 @@ public:
 	bool m_updatedThisFrame;
 
 	cv::Point m_location;
+
+	void SetNewLocation(cv::Point loc);
+
+	std::vector<cv::Point> history = std::vector<cv::Point>();
+
 };
 

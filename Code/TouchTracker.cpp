@@ -2,7 +2,7 @@
 
 
 
-TouchTracker::TouchTracker()
+TouchTracker::TouchTracker() : m_touchRects(std::vector<cv::Rect>())
 {
 	LoadSettings();
 }
@@ -40,9 +40,31 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	cv::imshow(name, adjustedImage);
 
-	TrackObjects(adjustedImage, name);
+	//TrackObjects(adjustedImage, name);
 	
 	CalculateCurrentBlobs(adjustedImage, false, true);
+
+	UpdateHungarian();
+
+	UpdateKalmanFilter();
+
+	{
+		cv::Mat drawTrail = adjustedImage.clone();
+		auto ittor = m_touches.begin();
+		for (; ittor != m_touches.end(); ++ittor)
+		{
+			if ((*ittor)->m_active)
+			{
+				auto histItor = (*ittor)->history.begin();
+				for (; histItor != (*ittor)->history.end(); histItor++)
+				{
+					cv::circle(drawTrail, (*histItor), 2, cv::Scalar(0, 0, 0));
+				}
+			}
+		}
+
+		cv::imshow(name + " Trail", drawTrail);
+	}
 }
 
 cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
@@ -134,6 +156,8 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 	cv::ContourApproximationModes contourApproximation = useApproximation ? cv::ContourApproximationModes::CHAIN_APPROX_SIMPLE : cv::ContourApproximationModes::CHAIN_APPROX_NONE;
 	cv::findContours(inputImage, blobs, retrievalMode, contourApproximation);
 
+	m_touchRects.clear();
+
 	if (blobs.size() > 0)
 	{
 		auto ittor = blobs.begin();
@@ -148,6 +172,7 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 				   && ( blobSize.width > m_miniumBlobSize && blobSize.width < m_maximumBlobSize ) )
 				{
 					++ittor;
+					m_touchRects.push_back(blobSize);
 				}
 				else
 				{
@@ -157,6 +182,72 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 			//else
 			{
 			//	++ittor;
+			}
+		}
+	}
+}
+
+void TouchTracker::InitKalmanFilter()
+{
+	m_filter = cv::KalmanFilter();
+}
+
+void TouchTracker::UpdateKalmanFilter()
+{
+
+}
+
+void TouchTracker::UpdateHungarian()
+{
+	auto lastFrame = std::vector<cv::Point>();
+	auto lastItor = m_touches.begin();
+	for (; lastItor != m_touches.end(); ++lastItor)
+	{
+		if ((*lastItor)->m_active)
+		{
+			float x = (*lastItor)->m_location.x;
+			float y = (*lastItor)->m_location.y;
+
+			lastFrame.push_back(cv::Point(x, y));
+		}
+	}
+
+	auto currentFrame = std::vector<cv::Point>();
+	auto currItor = m_touchRects.begin();
+	for (; currItor != m_touchRects.end(); ++currItor)
+	{
+		float x = (*currItor).x + ((*currItor).width / 2);
+		float y = (*currItor).y + ((*currItor).height / 2);
+
+		currentFrame.push_back(cv::Point( x, y ));
+	}
+
+	auto output = m_munkres.CalculatePairs(lastFrame, currentFrame);
+
+	if (output.size() > 0)
+	{
+		auto outPutItor = output.begin();
+		for (; outPutItor != output.end(); ++outPutItor)
+		{
+			if ((*outPutItor).first >= 0 && (*outPutItor).first < m_touches.size())
+			{
+				if ((*outPutItor).second >= 0 && (*outPutItor).second < currentFrame.size())
+				{
+					m_touches[(*outPutItor).first]->m_location = currentFrame[(*outPutItor).second];
+				}
+				else
+				{
+					m_touches[(*outPutItor).first]->m_active = false;
+				}
+			}
+			else
+			{
+				if ((*outPutItor).second >= 0 && (*outPutItor).second < currentFrame.size())
+				{
+					auto newTouch = GetNewTouch();
+					newTouch->m_location = currentFrame[(*outPutItor).second];
+					newTouch->m_active = true;
+				}
 			}
 		}
 	}
@@ -260,6 +351,7 @@ Touch* TouchTracker::GetNewTouch()
 	{
 		if (!(*ittor)->m_active)
 		{
+			(*ittor)->history.clear();
 			return (*ittor);
 		}
 	}

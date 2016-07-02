@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include "Utils.h"
 #include "Touch.h"
+#include "Munkres.h"
 
 class TouchTracker
 {
@@ -17,8 +18,12 @@ private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
 	void TrackObjects(cv::Mat currentFrame, cv::String name);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
+	void InitKalmanFilter();
+	void UpdateKalmanFilter();
+	void UpdateHungarian();
 
 	cv::Rect GetRectOfBlob( std::vector<cv::Point> blob );
+
 
 	void LoadSettings();
 
@@ -31,6 +36,10 @@ private:
 		
 
 private:
+	Munkres m_munkres = Munkres(50);;
+	cv::KalmanFilter m_filter;
+	std::vector<cv::Rect> m_touchRects;
+
 	cv::Mat backgroundImage;
 
 	cv::Mat m_lastFrame;
