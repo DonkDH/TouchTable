@@ -30,7 +30,7 @@ void Touch::SetNewLocation(cv::Point loc)
 		cv::setIdentity(m_kalmanFilter.measurementMatrix);
 		cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(1e-4));
 		cv::setIdentity(m_kalmanFilter.measurementNoiseCov, cv::Scalar::all(10));
-		cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.1));
+		cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.3));
 	}
 
 	m_active = true;
