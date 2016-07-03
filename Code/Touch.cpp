@@ -5,6 +5,11 @@ Touch::Touch() : m_active(false), m_location(0, 0), m_onEnd(false), m_onStart(fa
 {
 	m_kalmanFilter = cv::KalmanFilter(4, 2);
 	m_kalmanUpdateMat = cv::Mat_<float>(2,1);
+
+	cv::setIdentity(m_kalmanFilter.measurementMatrix);
+	cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(1e-4));
+	cv::setIdentity(m_kalmanFilter.measurementNoiseCov, cv::Scalar::all(10));
+	cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.1));
 }
 
 
