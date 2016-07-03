@@ -40,7 +40,7 @@ std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Poin
 
 	if ((lastPoints.size() == 0 || currentPoints.size() == 0))
 	{
-		return returnData;
+		//return returnData;
 	}
 
 	if (m_currentSize > m_maxSize)
