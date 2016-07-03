@@ -22,18 +22,25 @@ Munkres::~Munkres()
 std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Point> lastPoints,
 							  std::vector<cv::Point> currentPoints)
 {
-
-	std::vector< std::pair<int, int> > returnData = std::vector< std::pair<int, int> >();
-	if ((lastPoints.size() == 0 || currentPoints.size() == 0))
-	{
-	//	return returnData;
-	}
-
 	m_currentSize = lastPoints.size();
 
 	if (lastPoints.size() != currentPoints.size())
 	{
 		m_currentSize = MAX(lastPoints.size(), currentPoints.size());
+	}
+
+	std::vector< std::pair<int, int> > returnData = std::vector< std::pair<int, int> >();
+	for (int i = 0; i < m_currentSize; ++i)
+	{
+		std::pair<int, int> p = std::pair<int, int>();
+		p.first = -1;
+		p.second = -1;
+		returnData.push_back(p);
+	}
+
+	if ((lastPoints.size() == 0 || currentPoints.size() == 0))
+	{
+		return returnData;
 	}
 
 	if (m_currentSize > m_maxSize)
@@ -117,17 +124,18 @@ std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Poin
 	
 	if (!brokeOut)
 	{
-
+		int count = 0;
 		for (int x = 0; x < m_currentSize; ++x)
 		{
 			for (int y = 0; y < m_currentSize; ++y)
 			{
 				if (m_matrix[x][y][1] == 1)
 				{
-					std::pair<int, int> p = std::pair<int, int>();
-					p.first = x;
-					p.second = y;
-					returnData.push_back(p);
+					if( count < lastPoints.size())
+						returnData[count].first = x;
+					if(count < currentPoints.size())
+					returnData[count].second = y;
+					++count;
 				}
 			}
 		}
