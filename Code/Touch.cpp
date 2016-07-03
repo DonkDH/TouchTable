@@ -3,7 +3,7 @@
 
 Touch::Touch() : m_active(false), m_location(0, 0), m_onEnd(false), m_onStart(false)
 {
-	m_kalmanFilter = cv::KalmanFilter(2, 2);
+	m_kalmanFilter = cv::KalmanFilter(4, 2);
 	m_kalmanUpdateMat = cv::Mat_<float>(2,1);
 }
 
