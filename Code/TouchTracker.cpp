@@ -53,7 +53,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 		auto ittor = m_touches.begin();
 		for (; ittor != m_touches.end(); ++ittor)
 		{
-			//if ((*ittor)->m_active)
+			if ((*ittor)->m_active)
 			{
 				auto histItor = (*ittor)->history.begin();
 				for (; histItor != (*ittor)->history.end(); histItor++)
@@ -252,7 +252,7 @@ void TouchTracker::UpdateHungarian()
 				if ((*outPutItor).second >= 0 && (*outPutItor).second < currentFrame.size())
 				{
 					auto newTouch = GetNewTouch();
-					newTouch->m_location = currentFrame[(*outPutItor).second];
+					newTouch->SetNewLocation(currentFrame[(*outPutItor).second]);
 					newTouch->m_active = true;
 				}
 			}
