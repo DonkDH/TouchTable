@@ -10,7 +10,7 @@ Touch::Touch() : m_active(false), m_location(0, 0), m_onEnd(false), m_onStart(fa
 
 
 	cv::setIdentity(m_kalmanFilter.measurementMatrix);
-	cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(1e-4));
+	cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(10));
 	cv::setIdentity(m_kalmanFilter.measurementNoiseCov, cv::Scalar::all(10));
 	cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.1));
 }
@@ -28,7 +28,7 @@ void Touch::SetNewLocation(cv::Point loc)
 		m_kalmanFilter.statePre.at<float>(1) = loc.y;
 
 		cv::setIdentity(m_kalmanFilter.measurementMatrix);
-		cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(1e-4));
+		cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(10));
 		cv::setIdentity(m_kalmanFilter.measurementNoiseCov, cv::Scalar::all(1));
 		cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.1));
 	}
@@ -64,7 +64,7 @@ void Touch::FrameReset()
 			++m_inactiveFrameCount;
 		}
 
-		if (m_inactiveFrameCount > 10)
+		if (m_inactiveFrameCount > 5)
 		{
 			m_active = false;
 		}
