@@ -18,8 +18,7 @@ private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
 	void TrackObjects(cv::Mat currentFrame, cv::String name);
 	void CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, bool useApproximation);
-	void InitKalmanFilter();
-	void UpdateKalmanFilter();
+	void UpdateTouches();
 	void UpdateHungarian();
 
 	cv::Rect GetRectOfBlob( std::vector<cv::Point> blob );
@@ -36,8 +35,8 @@ private:
 		
 
 private:
-	Munkres m_munkres = Munkres(50);;
-	cv::KalmanFilter m_filter;
+	Munkres m_munkres = Munkres(50);
+
 	std::vector<cv::Rect> m_touchRects;
 
 	cv::Mat backgroundImage;

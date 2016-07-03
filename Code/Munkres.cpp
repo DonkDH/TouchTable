@@ -38,11 +38,6 @@ std::vector< std::pair<int, int> > Munkres::CalculatePairs( std::vector<cv::Poin
 		returnData.push_back(p);
 	}
 
-	if ((lastPoints.size() == 0 || currentPoints.size() == 0))
-	{
-		//return returnData;
-	}
-
 	if (m_currentSize > m_maxSize)
 	{
 		std::cout << "Error current input data larger than max size, data lost\n";

@@ -46,14 +46,14 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	UpdateHungarian();
 
-	UpdateKalmanFilter();
+	UpdateTouches();
 
 	{
 		cv::Mat drawTrail = adjustedImage.clone();
 		auto ittor = m_touches.begin();
 		for (; ittor != m_touches.end(); ++ittor)
 		{
-			if ((*ittor)->m_active)
+			if ((*ittor)->isActive())
 			{
 				auto histItor = (*ittor)->history.begin();
 				for (; histItor != (*ittor)->history.end(); histItor++)
@@ -187,14 +187,15 @@ void TouchTracker::CalculateCurrentBlobs(cv::Mat inputImage, bool findHoles, boo
 	}
 }
 
-void TouchTracker::InitKalmanFilter()
+void TouchTracker::UpdateTouches()
 {
-	m_filter = cv::KalmanFilter();
-}
+	auto lastItor = m_touches.begin();
+	for (; lastItor != m_touches.end(); ++lastItor)
+	{
+		(*lastItor)->Update();
+	}
 
-void TouchTracker::UpdateKalmanFilter()
-{
-
+	TouchModifiedReset();
 }
 
 void TouchTracker::UpdateHungarian()
@@ -203,12 +204,9 @@ void TouchTracker::UpdateHungarian()
 	auto lastItor = m_touches.begin();
 	for (; lastItor != m_touches.end(); ++lastItor)
 	{
-		if ((*lastItor)->m_active)
+		if ((*lastItor)->isActive())
 		{
-			float x = (*lastItor)->m_location.x;
-			float y = (*lastItor)->m_location.y;
-
-			lastFrame.push_back(cv::Point(x, y));
+			lastFrame.push_back((*lastItor)->GetRawLocation());
 		}
 	}
 
@@ -236,7 +234,7 @@ void TouchTracker::UpdateHungarian()
 					auto lastTouchItor = m_touches.begin();
 					for (; lastTouchItor != m_touches.end(); ++lastTouchItor)
 					{
-						if ((*lastTouchItor)->m_location == lastFrame[(*outPutItor).first])
+						if ((*lastTouchItor)->GetRawLocation() == lastFrame[(*outPutItor).first])
 						{
 							(*lastTouchItor)->SetNewLocation(currentFrame[(*outPutItor).second]);
 						}
@@ -244,7 +242,7 @@ void TouchTracker::UpdateHungarian()
 				}
 				else
 				{
-					m_touches[(*outPutItor).first]->m_active = false;
+					//m_touches[(*outPutItor).first]->isActive() = false;
 				}
 			}
 			else
@@ -253,7 +251,7 @@ void TouchTracker::UpdateHungarian()
 				{
 					auto newTouch = GetNewTouch();
 					newTouch->SetNewLocation(currentFrame[(*outPutItor).second]);
-					newTouch->m_active = true;
+					
 				}
 			}
 		}
@@ -347,7 +345,7 @@ void TouchTracker::TouchModifiedReset()
 	auto ittor = m_touches.begin();
 	for (; ittor != m_touches.end(); ++ittor)
 	{
-		(*ittor)->m_updatedThisFrame = false;
+		(*ittor)->FrameReset();
 	}
 }
 
@@ -356,7 +354,7 @@ Touch* TouchTracker::GetNewTouch()
 	auto ittor = m_touches.begin();
 	for (; ittor != m_touches.end(); ++ittor)
 	{
-		if (!(*ittor)->m_active)
+		if (!(*ittor)->isActive())
 		{
 			(*ittor)->history.clear();
 			return (*ittor);
@@ -378,15 +376,15 @@ bool TouchTracker::GetTouchForBlob(std::vector<cv::Point> blob, Touch* &touch)
 	auto ittor = m_touches.begin();
 	for (; ittor != m_touches.end(); ++ittor)
 	{
-		if (!(*ittor)->m_active)
+		if (!(*ittor)->isActive())
 		{
-			if (blobSize.contains((*ittor)->m_location))
+			if (blobSize.contains((*ittor)->GetRawLocation()))
 			{
 				auto blobIttor = blob.begin();
 				for (; blobIttor != blob.end(); ++blobIttor)
 				{
-					if (abs(blobIttor->x - (*ittor)->m_location.x) < 0.1 && 
-						abs(blobIttor->y - (*ittor)->m_location.y) < 0.1)
+					if (abs(blobIttor->x - (*ittor)->GetRawLocation().x) < 0.1 &&
+						abs(blobIttor->y - (*ittor)->GetRawLocation().y) < 0.1)
 					{
 						touch = (*ittor);
 						return true;
