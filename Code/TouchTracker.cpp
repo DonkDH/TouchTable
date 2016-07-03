@@ -244,7 +244,7 @@ void TouchTracker::UpdateHungarian()
 				}
 				else
 				{
-					//m_touches[(*outPutItor).first]->m_active = false;
+					m_touches[(*outPutItor).first]->m_active = false;
 				}
 			}
 			else
