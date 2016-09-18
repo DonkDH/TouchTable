@@ -121,12 +121,13 @@ int main(int argc, char** argv)
 		{
 			imageCorrector.SaveSettings();
 		}
-		else if (temp == 112 || 1048688) // P 
+		else if (temp == 112 || temp == 1048688) // P 
 		{
 			paused = !paused;
 		}
 		else if( temp == 113 || temp == 1048689) // Q
 		{
+			printf("Exit?");
 			destroyAllWindows();
 			return 0;
 		}
