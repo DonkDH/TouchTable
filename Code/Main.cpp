@@ -94,23 +94,23 @@ int main(int argc, char** argv)
 		if( temp >= 0 )
 			std::cout << temp << "\n";
 
-			Utils::StartTimer();
-        	imageCorrector.Update();
+		Utils::StartTimer();
+        imageCorrector.Update();
 
-			if (updateTouches)
+		if (updateTouches)
+		{
+			touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
+			//touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
+			//bDetect.Update(imageCorrector.GetImageA());
+		}
+		else
+		{
+			double current = ((double)cv::getTickCount() - autoStartTime) / cv::getTickFrequency();
+			if (current > 2)
 			{
-				touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
-				//touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
-				//bDetect.Update(imageCorrector.GetImageA());
+				updateTouches = true;
 			}
-			else
-			{
-				double current = ((double)cv::getTickCount() - autoStartTime) / cv::getTickFrequency();
-				if (current > 2)
-				{
-					updateTouches = true;
-				}
-			}
+		}
 
 		if (temp == 1048608 || temp == 32) // space bar
 		{
@@ -127,7 +127,8 @@ int main(int argc, char** argv)
 		}
 		else if( temp == 113 || temp == 1048689) // Q
 		{
-			break;
+			destroyAllWindows();
+			return 0;
 		}
 
 		fpsTime += ((double)cv::getTickCount() - fpsTickCount) / cv::getTickFrequency();
