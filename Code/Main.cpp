@@ -68,6 +68,10 @@ void RecordVideo()
 
 int main(int argc, char** argv)
 {
+#if LINUX
+	printf("LINUX Bitch");
+#endif
+
 	int counter = 0;
 
 	//BlobDetection bDetect = BlobDetection();
