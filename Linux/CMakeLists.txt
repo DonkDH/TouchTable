@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 SET(CMAKE_CXX_FLAGS "-std=c++0x")
-SET(CXXFLAGS "-LINUX=1")
 project( TouchTable )
+SET(CXXFLAGS "-LINUX=1")
 find_package( OpenCV REQUIRED )
 file(GLOB SRC_CODE
     "../Code/*.h"
