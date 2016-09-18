@@ -67,6 +67,11 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 	}
 }
 
+std::vector<Touch*>* TouchTracker::GetCurrentTouches()
+{
+	return &m_touches;
+}
+
 cv::Mat TouchTracker::GenerateTrackingImage(cv::Mat inputImage)
 {
 	cv::Mat grayImage;

@@ -14,6 +14,8 @@ public:
 
 	void UpdateTracking( cv::Mat inputImage, cv::String name);
 
+	std::vector<Touch*>* GetCurrentTouches();
+
 private:
 	cv::Mat GenerateTrackingImage(cv::Mat inputImage);
 	void TrackObjects(cv::Mat currentFrame, cv::String name);
@@ -32,7 +34,6 @@ private:
 	Touch* GetNewTouch();
 
 	bool GetTouchForBlob(std::vector<cv::Point> blob, Touch* &touch);
-		
 
 private:
 	Munkres m_munkres = Munkres(50);

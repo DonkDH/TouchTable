@@ -6,6 +6,7 @@
 #include "TouchTracker.h"
 #include "Utils.h"
 #include "BlobDetection.h"
+#include "TouchManager.h"
 
 using namespace cv;
 using namespace std;
@@ -79,6 +80,9 @@ int main(int argc, char** argv)
 	TouchTracker touchTrackerA = TouchTracker();
 	//TouchTracker touchTrackerB = TouchTracker();
 
+	TouchManager touchManager = TouchManager();
+	touchManager.SetTouchTracker(&touchTrackerA);
+
     bool paused = false;
 	bool updateTouches = false;
 	int64 fpsTime = 0;
@@ -102,6 +106,7 @@ int main(int argc, char** argv)
 			touchTrackerA.UpdateTracking(imageCorrector.GetImageA(), "Tracked A");
 			//touchTrackerB.UpdateTracking(imageCorrector.GetImageB(), "Tracked B");
 			//bDetect.Update(imageCorrector.GetImageA());
+			touchManager.Update();
 		}
 		else
 		{
@@ -127,7 +132,6 @@ int main(int argc, char** argv)
 		}
 		else if( temp == 113 || temp == 1048689) // Q
 		{
-			printf("Exit?");
 			destroyAllWindows();
 			return 0;
 		}
