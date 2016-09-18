@@ -43,11 +43,11 @@ void TouchManager::Update()
 
 		if (m_calibrationStage > 0)
 		{
-			m_linuxInput.StartTouch(0, p.x, p.y);
+			m_linuxInput.StartTouch(1, p.x, p.y);
 		}
 		else
 		{
-			m_linuxInput.MoveTouch(0, p.x, p.y);
+			m_linuxInput.MoveTouch(1, p.x, p.y);
 		}
 
 		printf("%d, %d \n", p.x, p.y);
@@ -58,7 +58,7 @@ void TouchManager::Update()
 	{
 		if (m_calibrationStage = 0)
 		{
-			m_linuxInput.EndTouch(0);
+			m_linuxInput.EndTouch(1);
 			++m_calibrationStage;
 		}
 	}

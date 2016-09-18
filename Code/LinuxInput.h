@@ -5,15 +5,15 @@
 #if LINUX
 #include <linux/input.h>
 #include <linux/uinput.h>
-#endif
 
 struct InputObject
 {
 	bool active;
-	unsigned ID;
-	unsigned x;
-	unsigned y;
+	uint ID;
+	uint x;
+	uint y;
 };
+#endif
 
 class LinuxInput
 {
