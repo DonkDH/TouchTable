@@ -21,6 +21,7 @@ private:
 
 private:
 	TouchTracker* m_tracker = nullptr;
+	LinuxInput m_linuxInput;
 
 	bool m_calibrating = true;
 	int m_calibrationStage = 0;

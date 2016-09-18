@@ -1,7 +1,8 @@
 #include "TouchManager.h"
 
-TouchManager::TouchManager() : m_calibrating(true)
+TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 {
+	m_linuxInput.StartTouch(0, 0, 0);
 }
 
 
@@ -27,14 +28,23 @@ void TouchManager::Update()
 		return;
 	}
 
+
+	if ((*m_tracker->GetCurrentTouches())[0]->isActive())
+	{
+		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
+		m_linuxInput.MoveTouch(0, p.x, p.y);
+	}
+
+	/*
 	auto touch = m_tracker->GetCurrentTouches()->begin();
 	for ( ; touch != m_tracker->GetCurrentTouches()->end(); touch++)
 	{
 		if ((*touch)->isActive())
 		{
-
+			
 		}
 	}
+	*/
 }
 
 void TouchManager::CalibrationUpdate()
@@ -79,6 +89,7 @@ void TouchManager::CalibrationUpdate()
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
 		m_calibrationStage = 0;
+		cv::destroyWindow("CalibrationUpdate");
 		return;
 	}
 
