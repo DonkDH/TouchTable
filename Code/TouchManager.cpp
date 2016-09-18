@@ -50,6 +50,8 @@ void TouchManager::Update()
 			m_linuxInput.MoveTouch(0, p.x, p.y);
 		}
 
+		printf("%d, %d", p.x, p.y);
+
 		m_calibrationStage = 0;
 	}
 	else
