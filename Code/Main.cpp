@@ -68,6 +68,8 @@ void RecordVideo()
 
 int main(int argc, char** argv)
 {
+
+	printf("please work");
 #if LINUX
 	printf("LINUX Bitch");
 #endif
