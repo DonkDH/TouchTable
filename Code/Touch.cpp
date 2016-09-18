@@ -31,6 +31,7 @@ void Touch::SetNewLocation(cv::Point loc)
 		cv::setIdentity(m_kalmanFilter.processNoiseCov, cv::Scalar::all(10));
 		cv::setIdentity(m_kalmanFilter.measurementNoiseCov, cv::Scalar::all(1));
 		cv::setIdentity(m_kalmanFilter.errorCovPost, cv::Scalar::all(.1));
+		m_onStart = true;
 	}
 
 	m_active = true;
@@ -64,7 +65,7 @@ void Touch::FrameReset()
 			++m_inactiveFrameCount;
 		}
 
-		if (m_inactiveFrameCount > 5)
+		if (m_inactiveFrameCount > 1)
 		{
 			m_active = false;
 		}

@@ -38,7 +38,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 
 	cv::Mat adjustedImage = GenerateTrackingImage(inputImage);
 
-	cv::imshow(name, adjustedImage);
+	//cv::imshow(name, adjustedImage);
 
 	//TrackObjects(adjustedImage, name);
 	
@@ -63,7 +63,7 @@ void TouchTracker::UpdateTracking( cv::Mat inputImage, cv::String name)
 			}
 		}
 		
-		cv::imshow(name + " Trail", drawTrail);
+		//cv::imshow(name + " Trail", drawTrail);
 	}
 }
 
