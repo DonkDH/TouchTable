@@ -138,6 +138,7 @@ void TouchTracker::TrackObjects( cv::Mat currentFrame, cv::String name )
 				cv::line(differenceImage, cv::Point(x, y), cv::Point(x + 25, y), cv::Scalar(255, 255, 255), 2);
 			}
 		}
+
 		if (didSomething)
 		{
 			cv::imshow(name + " Tracked", differenceImage);
