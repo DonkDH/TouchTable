@@ -118,7 +118,7 @@ void TouchManager::CalibrationUpdate()
 	case 4:
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
-		m_calibrationStage = 0;
+		//m_calibrationStage = 0;
 		cv::destroyWindow("CalibrationUpdate");
 		return;
 	}
