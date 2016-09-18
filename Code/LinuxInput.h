@@ -1,6 +1,6 @@
 #pragma once
 
-#define LINUX 1;
+#define LINUX 1
 
 #if LINUX
 #include <linux/input.h>
