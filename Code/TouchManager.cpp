@@ -2,7 +2,7 @@
 
 TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 {
-	m_linuxInput.StartTouch(0, 0, 0);
+	
 }
 
 
@@ -32,7 +32,33 @@ void TouchManager::Update()
 	if ((*m_tracker->GetCurrentTouches())[0]->isActive())
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
-		m_linuxInput.MoveTouch(0, p.x, p.y);
+
+		float stepX = 1.0f / (m_point3.x - m_point0.x);
+		float posX = (p.x - m_point0.x ) * stepX;
+		p.x = 100.0f * (1.0f - posX) + 500.0f * posX;
+
+		float stepY = 1.0f / (m_point3.y - m_point0.y);
+		float posY = (p.y - m_point0.y) * stepY;
+		p.y = 100.0f * (1.0f - posY) + 620.0f * posY;
+
+		if (m_calibrationStage > 0)
+		{
+			m_linuxInput.StartTouch(0, p.x, p.y);
+		}
+		else
+		{
+			m_linuxInput.MoveTouch(0, p.x, p.y);
+		}
+
+		m_calibrationStage = 0;
+	}
+	else
+	{
+		if (m_calibrationStage = 0)
+		{
+			m_linuxInput.EndTouch(0);
+			++m_calibrationStage;
+		}
 	}
 
 	/*
@@ -74,16 +100,16 @@ void TouchManager::CalibrationUpdate()
 	switch (m_calibrationStage)
 	{
 	case 0:
-		DrawCross(&image, cv::Point(100, 100));
+		DrawCross(&image, cv::Point(100, 100)); // top left
 		break;
 	case 1:
-		DrawCross(&image, cv::Point(500, 100));
+		DrawCross(&image, cv::Point(500, 100)); // top right
 		break;
 	case 2:
-		DrawCross(&image, cv::Point(100, 620));
+		DrawCross(&image, cv::Point(100, 620)); // bottom left
 		break;
 	case 3:
-		DrawCross(&image, cv::Point(500, 620));
+		DrawCross(&image, cv::Point(500, 620)); // bottom right
 		break;
 	case 4:
 		m_calibrating = false;
@@ -100,16 +126,16 @@ void TouchManager::CalibrationUpdate()
 		switch (m_calibrationStage)
 		{
 		case 0:
-			m_point0 = touchPoint;
+			m_point0 = touchPoint; // top left
 			break;
 		case 1:
-			m_point1 = touchPoint;
+			m_point1 = touchPoint; // top right
 			break;
 		case 2:
-			m_point2 = touchPoint;
+			m_point2 = touchPoint; // bottom left
 			break;
 		case 3:
-			m_point3 = touchPoint;
+			m_point3 = touchPoint; // bottom right
 			break;
 		}
 	}
