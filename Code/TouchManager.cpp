@@ -63,6 +63,8 @@ void TouchManager::Update()
 		}
 	}
 
+	m_linuxInput.Update();
+
 	/*
 	auto touch = m_tracker->GetCurrentTouches()->begin();
 	for ( ; touch != m_tracker->GetCurrentTouches()->end(); touch++)
