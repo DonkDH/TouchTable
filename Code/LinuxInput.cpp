@@ -183,7 +183,7 @@ void LinuxInput::EndTouch(int ID)
 #if LINUX
 	for (int i = 0; i < ioCount; ++i)
 	{
-		if (inputObjects[i].ID == ID)
+		if (inputObjects[i].ID == ID && inputObjects[i].active)
 		{
 			inputObjects[i].ID = -1;
 			return;
@@ -197,7 +197,7 @@ void LinuxInput::MoveTouch(int ID, int x, int y)
 #if LINUX
 	for (int i = 0; i < ioCount; ++i)
 	{
-		if (inputObjects[i].ID == ID)
+		if (inputObjects[i].ID == ID && inputObjects[i].active)
 		{
 			inputObjects[i].x = x;
 			inputObjects[i].y = y;
