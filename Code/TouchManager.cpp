@@ -104,7 +104,7 @@ void TouchManager::CalibrationUpdate()
 	}
 
 	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
-	//cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 	cv::imshow("CalibrationUpdate", image);
 }
 
