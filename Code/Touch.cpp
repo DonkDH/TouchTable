@@ -65,7 +65,7 @@ void Touch::FrameReset()
 			++m_inactiveFrameCount;
 		}
 
-		if (m_inactiveFrameCount > 1)
+		if (m_inactiveFrameCount > 0)
 		{
 			m_active = false;
 		}
