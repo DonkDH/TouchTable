@@ -9,7 +9,7 @@
 struct InputObject
 {
 	bool active;
-	uint ID;
+	int ID;
 	uint x;
 	uint y;
 };
