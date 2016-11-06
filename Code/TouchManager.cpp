@@ -33,13 +33,19 @@ void TouchManager::Update()
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
 
-		float stepX = 1.0f / (m_point3.x - m_point0.x);
+	/*	float stepX = 1.0f / (m_point3.x - m_point0.x);
 		float posX = (p.x - m_point0.x ) * stepX;
 		p.x = 100.0f * (1.0f - posX) + 500.0f * posX;
 
 		float stepY = 1.0f / (m_point3.y - m_point0.y);
 		float posY = (p.y - m_point0.y) * stepY;
-		p.y = 100.0f * (1.0f - posY) + 620.0f * posY;
+		p.y = 100.0f * (1.0f - posY) + 620.0f * posY;*/
+
+		ConversionPoint screenHL, screenLR;
+		GetScreenAreaPoints(p, &screenHL, &screenLR);
+		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
+		p.x = ((1.0f / (screenLR.touchPoint.x - screenHL.touchPoint.x)) * percent.x) + screenHL.touchPoint.x;
+		p.y = ((1.0f / (screenLR.touchPoint.y - screenHL.touchPoint.y)) * percent.y) + screenHL.touchPoint.y;
 
 		if (!m_calibrationTouchActive )
 		{
@@ -97,10 +103,38 @@ void TouchManager::CalibrationUpdate()
 
 	if (!touchFound && m_calibrationTouchActive)
 	{
+		ConversionPoint newPoint = ConversionPoint();
+		newPoint.screenPoint.x = xArray[xCurrentStage];
+		newPoint.screenPoint.y = yArray[yCurrentStage];
+
+		newPoint.touchPoint = touchPoint;
+
+		points.push_back(newPoint);
+
 		m_calibrationTouchActive = false;
 		m_calibrationStage++;
+		xCurrentStage++;
+		if (xCurrentStage >= xSize)
+		{
+			xCurrentStage = 0;
+			yCurrentStage++;
+		}
 	}
 
+	if (xSize * ySize <= m_calibrationStage)
+	{
+		m_calibrating = false;
+		m_calibrationTouchActive = false;
+		//m_calibrationStage = 0;
+		cv::destroyWindow("CalibrationUpdate");
+		return;
+	}
+	else
+	{
+		DrawCross(&image, cv::Point(xArray[xCurrentStage], yArray[yCurrentStage]));
+	}
+
+	/*	
 	switch (m_calibrationStage)
 	{
 	case 0:
@@ -143,6 +177,7 @@ void TouchManager::CalibrationUpdate()
 			break;
 		}
 	}
+	*/
 
 	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
 	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
@@ -154,6 +189,51 @@ void TouchManager::DrawCross(cv::Mat * mat, cv::Point p)
 	float crossSize = 10;
 	cv::line(*mat, p - cv::Point(0, crossSize), p + cv::Point(0, crossSize), cv:: Scalar(0, 0, 0));
 	cv::line(*mat, p - cv::Point(crossSize, 0), p + cv::Point(crossSize, 0), cv::Scalar(0, 0, 0));
+}
+
+// This is poorly named.....
+cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL, cv::Point screenLR)
+{
+	cv::Point returnPoint = cv::Point();
+
+	float stepX = 1.0f / (screenHL.x - screenLR.x);
+	float posX = (touch.x - screenLR.x) * stepX;
+	returnPoint.x = screenHL.x * (1.0f - posX) + screenLR.x * posX;
+
+	float stepY = 1.0f / (screenHL.y - screenLR.y);
+	float posY = (touch.y - screenLR.y) * stepY;
+	returnPoint.y = screenHL.y * (1.0f - posY) + screenLR.y * posY;
+
+	return returnPoint;
+}
+
+void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screenHL, ConversionPoint * screenLR)
+{
+	int pointIndex = 0;
+	if (touch.x > points[0].touchPoint.x)
+	{
+		for (; pointIndex < xSize-1; ++pointIndex)
+		{
+			if (touch.x > points[pointIndex].touchPoint.x)
+			{
+				break;
+			}
+		}
+	}
+
+	if (touch.y > points[pointIndex].touchPoint.y)
+	{
+		for (; pointIndex < (xSize * (ySize-1)); pointIndex += xSize)
+		{
+			if (touch.y > points[pointIndex].touchPoint.y)
+			{
+				break;
+			}
+		}
+	}
+
+	(*screenHL) = points[pointIndex];
+	(*screenLR) = points[pointIndex + xSize + 1];
 }
 
 
