@@ -103,14 +103,6 @@ void TouchManager::CalibrationUpdate()
 
 	if (!touchFound && m_calibrationTouchActive)
 	{
-		ConversionPoint newPoint = ConversionPoint();
-		newPoint.screenPoint.x = xArray[xCurrentStage];
-		newPoint.screenPoint.y = yArray[yCurrentStage];
-
-		newPoint.touchPoint = touchPoint;
-
-		points.push_back(newPoint);
-
 		m_calibrationTouchActive = false;
 		m_calibrationStage++;
 		xCurrentStage++;
@@ -119,6 +111,19 @@ void TouchManager::CalibrationUpdate()
 			xCurrentStage = 0;
 			yCurrentStage++;
 		}
+	}
+
+	if (touchFound && !m_calibrationTouchActive)
+	{
+		m_calibrationTouchActive = true;
+
+		ConversionPoint newPoint = ConversionPoint();
+		newPoint.screenPoint.x = xArray[xCurrentStage];
+		newPoint.screenPoint.y = yArray[yCurrentStage];
+
+		newPoint.touchPoint = touchPoint;
+
+		points.push_back(newPoint);
 	}
 
 	if (xSize * ySize <= m_calibrationStage)
