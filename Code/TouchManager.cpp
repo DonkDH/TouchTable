@@ -29,6 +29,8 @@ void TouchManager::Update()
 	}
 
 
+	cv::Mat image(cv::Size(1280, 720), CV_8SC3, cv::Scalar(0, 0, 255));
+
 	if ((*m_tracker->GetCurrentTouches())[0]->isActive())
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
@@ -43,9 +45,16 @@ void TouchManager::Update()
 
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
+
+		DrawCross(&image, screenHL.screenPoint);
+		DrawCross(&image, screenHL.screenPoint);
+
 		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
 		p.x = ((1.0f / (screenLR.touchPoint.x - screenHL.touchPoint.x)) * percent.x) + screenHL.touchPoint.x;
 		p.y = ((1.0f / (screenLR.touchPoint.y - screenHL.touchPoint.y)) * percent.y) + screenHL.touchPoint.y;
+
+
+		DrawCross(&image, p);
 
 		if (!m_calibrationTouchActive )
 		{
@@ -70,6 +79,10 @@ void TouchManager::Update()
 	}
 
 	m_linuxInput.Update();
+
+	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
+	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+	cv::imshow("CalibrationUpdate", image);
 
 	/*
 	auto touch = m_tracker->GetCurrentTouches()->begin();
