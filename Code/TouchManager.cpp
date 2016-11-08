@@ -2,7 +2,27 @@
 
 TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 {
-	
+	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
+	if (loadedData.length() > 0)
+	{
+		m_calibrating = false;
+
+		nlohmann::json settings = nlohmann::json::parse(loadedData);
+
+		if (settings["CalibrationData"].is_array())
+		{
+			std::vector<float> raw = settings["CalibrationData"];
+			std::vector<cv::Point2f> perspectiveData;
+			for (int i = 0; i < raw.size(); i += 4)
+			{
+				ConversionPoint newPoint = ConversionPoint();
+				newPoint.screenPoint = cv::Point(raw[i], raw[i + 1]);
+				newPoint.touchPoint = cv::Point(raw[i + 2], raw[i + 3]);
+
+				points.push_back(newPoint);
+			}
+		}
+	}
 }
 
 
@@ -151,6 +171,26 @@ void TouchManager::CalibrationUpdate()
 		m_calibrationTouchActive = false;
 		//m_calibrationStage = 0;
 		cv::destroyWindow("CalibrationUpdate");
+
+		{
+			nlohmann::json exportData;
+
+			{
+				std::vector<float> tempStore = std::vector<float>();
+				auto itor = points.begin();
+				for (; itor != points.end(); ++itor)
+				{
+					tempStore.push_back(itor->screenPoint.x);
+					tempStore.push_back(itor->screenPoint.y);
+					tempStore.push_back(itor->touchPoint.x);
+					tempStore.push_back(itor->touchPoint.y);
+				}
+				exportData["CalibrationData"] = tempStore;
+			}
+
+			Utils::WrightTextToFile(settingsFileName, exportData.dump());
+		}
+
 		return;
 	}
 	else

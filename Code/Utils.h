@@ -9,6 +9,7 @@ class Utils
 {
 public:
 	static cv::String ReadAllTextFromFile(const char * path);
+	static void WrightTextToFile(const char * path, std::string data);
 
 	static void StartTimer();
 	static double GetTime(const bool print = false);

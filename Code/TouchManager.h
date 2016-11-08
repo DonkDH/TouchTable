@@ -31,6 +31,8 @@ private:
 	void GetScreenAreaPoints(cv::Point touch, ConversionPoint* screenHL, ConversionPoint* screenLR);
 
 private:
+	const char* settingsFileName = "TouchSettings_Settings.json";
+
 	TouchTracker* m_tracker = nullptr;
 	LinuxInput m_linuxInput;
 

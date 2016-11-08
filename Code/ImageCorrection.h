@@ -21,8 +21,6 @@ private:
 	cv::VideoCapture OpenCapture(cv::String source, int camera, bool forceCamera = false);
 	cv::Mat UpdateCorrectionPerspective(cv::String sourceName, cv::Mat source, CorrectPerspective* corrector);
 	
-	void WrightTextToFile(const char* path, std::string data);
-
 private:
     cv::String m_nameA = "Capture A";
     cv::String m_nameB = "Capture B";

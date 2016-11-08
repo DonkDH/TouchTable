@@ -156,7 +156,7 @@ void ImageCorrection::SaveSettings()
 		exportData["pointsB"] = tempStore;
 	}
 
-	WrightTextToFile(settingsFileName, exportData.dump());
+	Utils::WrightTextToFile(settingsFileName, exportData.dump());
 }
 
 cv::Mat ImageCorrection::GetImageA()
@@ -167,20 +167,6 @@ cv::Mat ImageCorrection::GetImageA()
 cv::Mat ImageCorrection::GetImageB()
 {
 	return m_currentB;
-}
-
-void ImageCorrection::WrightTextToFile(const char * path, std::string data)
-{
-	std::fstream file;
-	file.open(path, std::ios::out);
-
-	if (file.is_open())
-	{
-		file.clear();
-		file << data;
-
-		file.close();
-	}
 }
 
 cv::VideoCapture ImageCorrection::OpenCapture(cv::String source, int camera, bool forceCamera)

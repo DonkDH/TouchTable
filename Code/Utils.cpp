@@ -23,6 +23,20 @@ cv::String Utils::ReadAllTextFromFile(const char * path)
 	return compleateData;
 }
 
+void Utils::WrightTextToFile(const char * path, std::string data)
+{
+	std::fstream file;
+	file.open(path, std::ios::out);
+
+	if (file.is_open())
+	{
+		file.clear();
+		file << data;
+
+		file.close();
+	}
+}
+
 void Utils::StartTimer()
 {
 	m_timerSart = cv::getTickCount();
