@@ -103,21 +103,6 @@ void TouchManager::CalibrationUpdate()
 
 	if (!touchFound && m_calibrationTouchActive)
 	{
-		ConversionPoint newPoint = ConversionPoint();
-		newPoint.screenPoint = cv::Point();
-		newPoint.screenPoint.x = xArray[xCurrentStage];
-		newPoint.screenPoint.y = yArray[yCurrentStage];
-
-		newPoint.touchPoint = cv::Point( touchPoint );
-
-
-		printf("\n");
-		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
-		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
-		printf("Touch : ( %f, %f ) \n\n", touchPoint.x, touchPoint.y);
-
-		points.push_back(newPoint);
-
 		m_calibrationTouchActive = false;
 		m_calibrationStage++;
 		xCurrentStage++;
@@ -132,7 +117,20 @@ void TouchManager::CalibrationUpdate()
 	{
 		m_calibrationTouchActive = true;
 
-		
+		ConversionPoint newPoint = ConversionPoint();
+		newPoint.screenPoint = cv::Point();
+		newPoint.screenPoint.x = xArray[xCurrentStage];
+		newPoint.screenPoint.y = yArray[yCurrentStage];
+
+		newPoint.touchPoint = cv::Point(touchPoint);
+
+
+		printf("\n");
+		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
+		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
+		printf("Touch : ( %f, %f ) \n\n", touchPoint.x, touchPoint.y);
+
+		points.push_back(newPoint);
 	}
 
 	if (xSize * ySize <= m_calibrationStage)
