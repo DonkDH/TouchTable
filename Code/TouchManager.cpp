@@ -25,7 +25,7 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 				newPoint.screenPoint = cv::Point(raw[i], raw[i + 1]);
 				newPoint.touchPoint = cv::Point(raw[i + 2], raw[i + 3]);
 
-				
+				printf( "\n%i", i );
 
 				points.push_back(newPoint);
 			}
