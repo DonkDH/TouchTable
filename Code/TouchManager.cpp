@@ -17,17 +17,11 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 		{
 			std::vector<int> raw = settings["CalibrationData"];
 
-			printf("raw.size() = %i \n", raw.size());
-
-			for (int i = 0; i < raw.size()-4; i += 4)
+			for (int i = 0; i < raw.size(); i += 4)
 			{
 				ConversionPoint newPoint = ConversionPoint();
 				newPoint.screenPoint = cv::Point(raw[i    ], raw[i + 1]);
 				newPoint.touchPoint  = cv::Point(raw[i + 2], raw[i + 3]);
-
-				printf( "\n%i\n", i );
-				printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
-				printf("Point : ( %i, %i ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
 
 				points.push_back(newPoint);
 			}
@@ -52,7 +46,11 @@ void TouchManager::SetTouchTracker(TouchTracker * tracker)
 
 void TouchManager::Update()
 {
-	if (m_tracker == nullptr || m_tracker->GetCurrentTouches() == nullptr)
+	if (m_tracker == nullptr || 
+		m_tracker->GetCurrentTouches() == nullptr ||
+		m_tracker->GetCurrentTouches()->size() == 0 ||
+		(*m_tracker->GetCurrentTouches())[0] == nullptr
+		)
 	{
 		return;
 	}
@@ -63,20 +61,11 @@ void TouchManager::Update()
 		return;
 	}
 
-
 	cv::Mat image(cv::Size(1280, 720), CV_8SC3, cv::Scalar(0, 0, 255));
 
 	if ((*m_tracker->GetCurrentTouches())[0]->isActive())
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
-
-	/*	float stepX = 1.0f / (m_point3.x - m_point0.x);
-		float posX = (p.x - m_point0.x ) * stepX;
-		p.x = 100.0f * (1.0f - posX) + 500.0f * posX;
-
-		float stepY = 1.0f / (m_point3.y - m_point0.y);
-		float posY = (p.y - m_point0.y) * stepY;
-		p.y = 100.0f * (1.0f - posY) + 620.0f * posY;*/
 
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
@@ -87,7 +76,6 @@ void TouchManager::Update()
 		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
 		p.x = ((1.0f / (screenLR.touchPoint.x - screenHL.touchPoint.x)) * percent.x) + screenHL.touchPoint.x;
 		p.y = ((1.0f / (screenLR.touchPoint.y - screenHL.touchPoint.y)) * percent.y) + screenHL.touchPoint.y;
-
 
 		DrawCross(&image, p);
 
@@ -118,17 +106,6 @@ void TouchManager::Update()
 	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
 	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 	cv::imshow("CalibrationUpdate", image);
-
-	/*
-	auto touch = m_tracker->GetCurrentTouches()->begin();
-	for ( ; touch != m_tracker->GetCurrentTouches()->end(); touch++)
-	{
-		if ((*touch)->isActive())
-		{
-			
-		}
-	}
-	*/
 }
 
 void TouchManager::CalibrationUpdate()
@@ -173,9 +150,7 @@ void TouchManager::CalibrationUpdate()
 		newPoint.touchPoint = cv::Point(touchPoint);
 
 		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
-		printf("Point : ( %i, %i ) \n", newPoint.touchPoint.x, newPoint.touchPoint.y);
-		printf("sdfgg : ( %d, %f ) \n", 69.69f, 69.69f);
-		printf("Touch : ( %i, %i ) \n\n\n", touchPoint.x, touchPoint.y);
+		printf("Point : ( %i, %i ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
 
 		points.push_back(newPoint);
 	}
