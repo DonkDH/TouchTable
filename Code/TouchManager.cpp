@@ -7,14 +7,13 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	{
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
-
+		points = std::vector<ConversionPoint>();
 
 		nlohmann::json settings = nlohmann::json::parse(loadedData);
 
 		if (settings["CalibrationData"].is_array())
 		{
 			std::vector<int> raw = settings["CalibrationData"];
-			std::vector<cv::Point2f> perspectiveData;
 			for (int i = 0; i < raw.size(); i += 4)
 			{
 				ConversionPoint newPoint = ConversionPoint();
@@ -26,6 +25,10 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 		}
 
 		printf("CalibrationData: load compleate.");
+	}
+	else
+	{
+		printf("No loaded data.");
 	}
 }
 
