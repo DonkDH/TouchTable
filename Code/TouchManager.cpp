@@ -5,8 +5,6 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
-		printf(loadedData.c_str());
-
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
 		points = std::vector<ConversionPoint>();
@@ -265,7 +263,7 @@ cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL,
 void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screenHL, ConversionPoint * screenLR)
 {
 	int pointIndex = 0;
-	if (touch.x > points[0].touchPoint.x)
+	if (touch.x < points[0].touchPoint.x)
 	{
 		for (; pointIndex < xSize-1; ++pointIndex)
 		{
