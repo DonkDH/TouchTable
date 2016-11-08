@@ -69,7 +69,7 @@ void TouchManager::Update()
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
 
 		DrawCross(&image, screenHL.screenPoint);
-		DrawCross(&image, screenHL.screenPoint);
+		DrawCross(&image, screenLR.screenPoint);
 
 		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
 		p.x = ((1.0f / (screenLR.touchPoint.x - screenHL.touchPoint.x)) * percent.x) + screenHL.touchPoint.x;
@@ -274,16 +274,16 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 		}
 	}
 
-	/*if (touch.y > points[pointIndex].touchPoint.y)
+	if (touch.y > points[pointIndex].touchPoint.y)
 	{
-		for (; pointIndex < (xSize * ySize) - 1; pointIndex += xSize)
+		for (; pointIndex < (xSize * (ySize-1)); pointIndex += xSize)
 		{
 			if (touch.y > points[pointIndex].touchPoint.y)
 			{
 				break;
 			}
 		}
-	}*/
+	}
 
 	(*screenHL) = points[pointIndex];
 	(*screenLR) = points[pointIndex + xSize + 1];
