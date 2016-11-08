@@ -5,13 +5,15 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
+
 		m_calibrating = false;
+		m_calibrationTouchActive = false;
 
 		nlohmann::json settings = nlohmann::json::parse(loadedData);
 
 		if (settings["CalibrationData"].is_array())
 		{
-			std::vector<float> raw = settings["CalibrationData"];
+			std::vector<int> raw = settings["CalibrationData"];
 			std::vector<cv::Point2f> perspectiveData;
 			for (int i = 0; i < raw.size(); i += 4)
 			{
@@ -176,7 +178,7 @@ void TouchManager::CalibrationUpdate()
 			nlohmann::json exportData;
 
 			{
-				std::vector<float> tempStore = std::vector<float>();
+				std::vector<int> tempStore = std::vector<int>();
 				auto itor = points.begin();
 				for (; itor != points.end(); ++itor)
 				{
