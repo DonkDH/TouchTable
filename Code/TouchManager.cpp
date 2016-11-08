@@ -114,6 +114,7 @@ void TouchManager::CalibrationUpdate()
 		printf("\n");
 		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
 		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
+		printf("Touch : ( %f, %f ) \n\n", touchPoint.x, touchPoint.y);
 
 		points.push_back(newPoint);
 
