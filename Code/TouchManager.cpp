@@ -5,6 +5,8 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
+		printf(loadedData.c_str());
+
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
 		points = std::vector<ConversionPoint>();
