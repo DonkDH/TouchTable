@@ -124,11 +124,10 @@ void TouchManager::CalibrationUpdate()
 
 		newPoint.touchPoint = cv::Point(touchPoint);
 
-
-		printf("\n");
 		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
-		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
-		printf("Touch : ( %f, %f ) \n\n", touchPoint.x, touchPoint.y);
+		printf("Point : ( %i, %i ) \n", newPoint.touchPoint.x, newPoint.touchPoint.y);
+		printf("sdfgg : ( %d, %f ) \n", 69.69f, 69.69f);
+		printf("Touch : ( %i, %i ) \n\n\n", touchPoint.x, touchPoint.y);
 
 		points.push_back(newPoint);
 	}
