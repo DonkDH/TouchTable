@@ -5,9 +5,9 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
-
 		m_calibrating = false;
 		m_calibrationTouchActive = false;
+
 
 		nlohmann::json settings = nlohmann::json::parse(loadedData);
 
@@ -24,6 +24,8 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 				points.push_back(newPoint);
 			}
 		}
+
+		printf("CalibrationData: load compleate.");
 	}
 }
 
