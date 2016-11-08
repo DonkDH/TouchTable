@@ -104,14 +104,15 @@ void TouchManager::CalibrationUpdate()
 	if (!touchFound && m_calibrationTouchActive)
 	{
 		ConversionPoint newPoint = ConversionPoint();
+		newPoint.screenPoint = cv::Point();
 		newPoint.screenPoint.x = xArray[xCurrentStage];
 		newPoint.screenPoint.y = yArray[yCurrentStage];
 
-		newPoint.touchPoint = touchPoint;
+		newPoint.touchPoint = cv::Point( touchPoint );
 
 
 		printf("\n");
-		printf("Screen: ( %f, %f ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
+		printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
 		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
 
 		points.push_back(newPoint);

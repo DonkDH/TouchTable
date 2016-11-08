@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 			return 0;
 		}
 
-		fpsTime += ((double)cv::getTickCount() - fpsTickCount) / cv::getTickFrequency();
+		/*fpsTime += ((double)cv::getTickCount() - fpsTickCount) / cv::getTickFrequency();
 		++fps;
 		if (fpsTime >= 1)
 		{
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 			fps = 0;
 			fpsTime = 0;
 			fpsTickCount = cv::getTickCount();
-		}
+		}*/
 
 
 	}
