@@ -103,6 +103,19 @@ void TouchManager::CalibrationUpdate()
 
 	if (!touchFound && m_calibrationTouchActive)
 	{
+		ConversionPoint newPoint = ConversionPoint();
+		newPoint.screenPoint.x = xArray[xCurrentStage];
+		newPoint.screenPoint.y = yArray[yCurrentStage];
+
+		newPoint.touchPoint = touchPoint;
+
+
+		printf("\n");
+		printf("Screen: ( %f, %f ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
+		printf("Point : ( %f, %f ) \n\n", newPoint.touchPoint.x, newPoint.touchPoint.y);
+
+		points.push_back(newPoint);
+
 		m_calibrationTouchActive = false;
 		m_calibrationStage++;
 		xCurrentStage++;
@@ -117,13 +130,7 @@ void TouchManager::CalibrationUpdate()
 	{
 		m_calibrationTouchActive = true;
 
-		ConversionPoint newPoint = ConversionPoint();
-		newPoint.screenPoint.x = xArray[xCurrentStage];
-		newPoint.screenPoint.y = yArray[yCurrentStage];
-
-		newPoint.touchPoint = touchPoint;
-
-		points.push_back(newPoint);
+		
 	}
 
 	if (xSize * ySize <= m_calibrationStage)
@@ -187,6 +194,7 @@ void TouchManager::CalibrationUpdate()
 	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
 	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
 	cv::imshow("CalibrationUpdate", image);
+
 }
 
 void TouchManager::DrawCross(cv::Mat * mat, cv::Point p)
