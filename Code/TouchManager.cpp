@@ -75,7 +75,7 @@ void TouchManager::Update()
 		p.x = ((1.0f / (screenLR.touchPoint.x - screenHL.touchPoint.x)) * percent.x) + screenHL.touchPoint.x;
 		p.y = ((1.0f / (screenLR.touchPoint.y - screenHL.touchPoint.y)) * percent.y) + screenHL.touchPoint.y;
 
-		DrawCross(&image, p);
+		//DrawCross(&image, p);
 
 		if (!m_calibrationTouchActive )
 		{
