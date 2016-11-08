@@ -19,11 +19,11 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 
 			printf("raw.size() = %i \n", raw.size());
 
-			for (int i = 0; i < raw.size(); i += 4)
+			for (int i = 0; i < raw.size()-4; i += 4)
 			{
 				ConversionPoint newPoint = ConversionPoint();
-				newPoint.screenPoint = cv::Point(raw[i], raw[i + 1]);
-				newPoint.touchPoint = cv::Point(raw[i + 2], raw[i + 3]);
+				newPoint.screenPoint = cv::Point(raw[i    ], raw[i + 1]);
+				newPoint.touchPoint  = cv::Point(raw[i + 2], raw[i + 3]);
 
 				printf( "\n%i\n", i );
 				printf("Screen: ( %i, %i ) \n", newPoint.screenPoint.x, newPoint.screenPoint.y);
@@ -40,7 +40,6 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 		printf("No loaded data.");
 	}
 }
-
 
 TouchManager::~TouchManager()
 {
