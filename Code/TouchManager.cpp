@@ -16,11 +16,16 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 		if (settings["CalibrationData"].is_array())
 		{
 			std::vector<int> raw = settings["CalibrationData"];
+
+			printf("raw.size() = %i \n", raw.size());
+
 			for (int i = 0; i < raw.size(); i += 4)
 			{
 				ConversionPoint newPoint = ConversionPoint();
 				newPoint.screenPoint = cv::Point(raw[i], raw[i + 1]);
 				newPoint.touchPoint = cv::Point(raw[i + 2], raw[i + 3]);
+
+				
 
 				points.push_back(newPoint);
 			}
