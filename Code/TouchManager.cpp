@@ -265,7 +265,7 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 	int pointIndex = 0;
 	if (touch.x < points[0].touchPoint.x)
 	{
-		for (; pointIndex < xSize-1; ++pointIndex)
+		for (; pointIndex < xSize; ++pointIndex)
 		{
 			if (touch.x > points[pointIndex].touchPoint.x)
 			{
