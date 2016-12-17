@@ -267,11 +267,11 @@ cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL,
 void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screenHL, ConversionPoint * screenLR)
 {
 	int pointIndex = 0;
-	if (touch.x > points[0].touchPoint.x)
+	if (touch.x < points[0].touchPoint.x)
 	{
 		for (; pointIndex < xSize - 1; ++pointIndex)
 		{
-			if (touch.x > points[pointIndex].touchPoint.x)
+			if (touch.x < points[pointIndex].touchPoint.x)
 			{
 				if (pointIndex > 0)
 				{
