@@ -65,10 +65,12 @@ void TouchManager::Update()
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
 
-		printf("Touch: %d, %d \n", p.x, p.y);
-
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
+
+		printf("Touch: %d, %d \n", p.x, p.y);
+		printf("screenHL: %d, %d \n", screenHL.touchPoint.x, screenHL.touchPoint.y);
+		printf("screenLR: %d, %d \n", screenLR.touchPoint.x, screenLR.touchPoint.y);
 
 		DrawCross(&image, screenHL.screenPoint);
 		DrawCross(&image, screenLR.screenPoint);
