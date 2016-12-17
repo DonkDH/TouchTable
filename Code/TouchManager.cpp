@@ -282,7 +282,7 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 		}
 	}
 
-	if (touch.y > points[pointIndex].touchPoint.y)
+	/*if (touch.y > points[pointIndex].touchPoint.y)
 	{
 		for (; pointIndex < ((xSize - 1) * (ySize-1)); pointIndex += xSize)
 		{
@@ -291,7 +291,7 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 				break;
 			}
 		}
-	}
+	}*/
 
 	(*screenHL) = points[pointIndex];
 	(*screenLR) = points[pointIndex + xSize + 1];
