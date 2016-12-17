@@ -266,8 +266,24 @@ cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL,
 
 void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screenHL, ConversionPoint * screenLR)
 {
+	int indexA = 0;
+	int indexB = xSize + 1;
+	
+	double closest = 100000000;
+
+	for (int x = 0; x < xSize - 1; ++x)
+	{
+		double d = Utils::SqrDist(touch, points[x].touchPoint);
+		d += Utils::SqrDist(touch, points[x + xSize + 1].touchPoint);
+	}
+
+	(*screenHL) = points[indexA];
+	(*screenLR) = points[indexB];
+
+	/*
+
 	int pointIndex = 0;
-	if (touch.x < points[0].touchPoint.x)
+	//if (touch.x < points[0].touchPoint.x)
 	{
 		for (; pointIndex < xSize - 1; ++pointIndex)
 		{
@@ -281,8 +297,7 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 			}
 		}
 	}
-
-	/*if (touch.y > points[pointIndex].touchPoint.y)
+if (touch.y > points[pointIndex].touchPoint.y)
 	{
 		for (; pointIndex < ((xSize - 1) * (ySize-1)); pointIndex += xSize)
 		{
@@ -291,8 +306,8 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 				break;
 			}
 		}
-	}*/
+	}
 
 	(*screenHL) = points[pointIndex];
-	(*screenLR) = points[pointIndex + xSize + 1];
+	(*screenLR) = points[pointIndex + xSize + 1];*/
 }

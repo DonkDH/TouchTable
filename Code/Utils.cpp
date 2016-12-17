@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <math.h>
 
 int64 Utils::m_timerSart = 0;
 
@@ -69,4 +70,18 @@ cv::Mat Utils::RotateMat(cv::Mat source, float angle)
 
 	cv::warpAffine(source, dst, rot_mat, rotatedRect.size());
 	return dst;
+}
+
+double Utils::SqrDist(const cv::Point a, const cv::Point b)
+{
+	cv::Point c = b - a;
+	
+	return (c.x * c.x) + (c.y * c.y);
+}
+
+double Utils::Dist(const cv::Point a, const cv::Point b)
+{
+	cv::Point c = b - a;
+
+	return sqrt((c.x * c.x) + (c.y * c.y));
 }

@@ -15,6 +15,9 @@ public:
 	static double GetTime(const bool print = false);
 	static cv::Mat RotateMat(cv::Mat source, float angle);
 
+	static double SqrDist(const cv::Point a, const cv::Point b);
+	static double Dist(const cv::Point a, const cv::Point b);
+
 private:
 	static int64 m_timerSart;
 };
