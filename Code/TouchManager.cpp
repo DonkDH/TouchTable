@@ -65,6 +65,8 @@ void TouchManager::Update()
 	{
 		cv::Point p = (*m_tracker->GetCurrentTouches())[0]->GetLocation();
 
+		printf("Touch: %d, %d \n", p.x, p.y);
+
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
 
@@ -80,20 +82,20 @@ void TouchManager::Update()
 		if (!m_calibrationTouchActive )
 		{
 			m_linuxInput.StartTouch(1, p.x, p.y);
-			printf("StartTouch: %d, %d \n", p.x, p.y);
+			//printf("StartTouch: %d, %d \n", p.x, p.y);
 			m_calibrationTouchActive = true;
 		}
 		else
 		{
 			m_linuxInput.MoveTouch(1, p.x, p.y);
-			printf("MoveTouch: %d, %d \n", p.x, p.y);
+			//printf("MoveTouch: %d, %d \n", p.x, p.y);
 		}
 	}
 	else
 	{
 		if (m_calibrationTouchActive)
 		{
-			printf("m_linuxInput.EndTouch(1);");
+			//printf("m_linuxInput.EndTouch(1);");
 			m_linuxInput.EndTouch(1);
 			m_calibrationTouchActive = false;
 		}
