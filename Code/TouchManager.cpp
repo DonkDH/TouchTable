@@ -271,16 +271,23 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 	
 	double closest = 100000000;
 
-	for (int x = 0; x < xSize - 1; ++x)
+	int i = 0;
+
+	for (int y = 0; y < ySize - 1; ++y)
 	{
-		double d = Utils::SqrDist(touch, points[x].touchPoint);
-		d += Utils::SqrDist(touch, points[x + xSize + 1].touchPoint);
-		if (d < closest)
+		for (int x = 0; x < xSize - 1; ++x)
 		{
-			closest = d;
-			indexA = x;
-			indexB = x + xSize + 1;
+			double d = Utils::SqrDist(touch, points[i].touchPoint);
+			d += Utils::SqrDist(touch, points[i + xSize + 1].touchPoint);
+			if (d < closest)
+			{
+				closest = d;
+				indexA = i;
+				indexB = i + xSize + 1;
+			}
 		}
+
+		i += 2;
 	}
 
 	(*screenHL) = points[indexA];
