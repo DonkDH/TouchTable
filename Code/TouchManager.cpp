@@ -88,8 +88,8 @@ void TouchManager::Update()
 		cv::Point2f percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
 		printf("Percent: %f, %f \n", percent.x, percent.y);
 
-		p.x = ((1.0f / (screenLR.screenPoint.x - screenHL.screenPoint.x)) * percent.x) + screenHL.screenPoint.x;
-		p.y = ((1.0f / (screenLR.screenPoint.y - screenHL.screenPoint.y)) * percent.y) + screenHL.screenPoint.y;
+		p.x = ((1.0f / (screenHL.screenPoint.x - screenLR.screenPoint.x)) * percent.x) + screenLR.screenPoint.x;
+		p.y = ((1.0f / (screenHL.screenPoint.y - screenLR.screenPoint.y)) * percent.y) + screenLR.screenPoint.y;
 
 		DrawCross(&image, p);
 
