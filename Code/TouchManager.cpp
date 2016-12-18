@@ -8,9 +8,9 @@ TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 	////lr
 	//cv::Point lr = cv::Point(65, 90);
 	////point
-	//cv::Point p = cv::Point(45, 50);
+	//cv::Point p = cv::Point(5, 50);
 
-	//cv::Point out = TouchSreenToPercent(p, hl, lr);
+	//cv::Point2f out = TouchSreenToPercent(p, hl, lr);
 
 	//printf("Percent: %f, %f \n", out.x, out.y);
 
@@ -85,7 +85,7 @@ void TouchManager::Update()
 		DrawCross(&image, screenHL.screenPoint);
 		DrawCross(&image, screenLR.screenPoint);
 
-		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
+		cv::Point2f percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
 		printf("Percent: %f, %f \n", percent.x, percent.y);
 
 		p.x = ((1.0f / (screenLR.screenPoint.x - screenHL.screenPoint.x)) * percent.x) + screenHL.screenPoint.x;
