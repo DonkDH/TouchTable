@@ -1,4 +1,5 @@
 #include "TouchManager.h"
+#include <math.h>
 
 TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 {
@@ -251,11 +252,11 @@ cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL,
 {
 	cv::Point returnPoint = cv::Point();
 
-	float stepX = 1.0f / (screenHL.x - screenLR.x);
+	float stepX = 1.0f / abs(screenHL.x - screenLR.x);
 	returnPoint.x = (touch.x - screenLR.x) * stepX;
 	//returnPoint.x = screenHL.x * (1.0f - posX) + screenLR.x * posX;
 
-	float stepY = 1.0f / (screenHL.y - screenLR.y);
+	float stepY = 1.0f / abs(screenHL.y - screenLR.y);
 	returnPoint.y = (touch.y - screenLR.y) * stepY;
 	//returnPoint.y = screenHL.y * (1.0f - posY) + screenLR.y * posY;
 
