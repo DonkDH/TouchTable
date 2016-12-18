@@ -67,15 +67,13 @@ void TouchManager::Update()
 
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
-
-		printf("Touch: %d, %d \n", p.x, p.y);
-		printf("screenHL: %d, %d \n", screenHL.touchPoint.x, screenHL.touchPoint.y);
-		printf("screenLR: %d, %d \n", screenLR.touchPoint.x, screenLR.touchPoint.y);
-
+		
 		DrawCross(&image, screenHL.screenPoint);
 		DrawCross(&image, screenLR.screenPoint);
 
 		cv::Point percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
+		printf("Percent: %d, %d \n", percent.x, percent.y);
+
 		p.x = ((1.0f / (screenLR.screenPoint.x - screenHL.screenPoint.x)) * percent.x) + screenHL.screenPoint.x;
 		p.y = ((1.0f / (screenLR.screenPoint.y - screenHL.screenPoint.y)) * percent.y) + screenHL.screenPoint.y;
 
@@ -84,20 +82,20 @@ void TouchManager::Update()
 		if (!m_calibrationTouchActive )
 		{
 			m_linuxInput.StartTouch(1, p.x, p.y);
-			printf("StartTouch: %d, %d \n", p.x, p.y);
+			//printf("StartTouch: %d, %d \n", p.x, p.y);
 			m_calibrationTouchActive = true;
 		}
 		else
 		{
 			m_linuxInput.MoveTouch(1, p.x, p.y);
-			printf("MoveTouch: %d, %d \n", p.x, p.y);
+			//printf("MoveTouch: %d, %d \n", p.x, p.y);
 		}
 	}
 	else
 	{
 		if (m_calibrationTouchActive)
 		{
-			printf("m_linuxInput.EndTouch(1);");
+			//printf("m_linuxInput.EndTouch(1);");
 			m_linuxInput.EndTouch(1);
 			m_calibrationTouchActive = false;
 		}
