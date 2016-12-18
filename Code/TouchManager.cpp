@@ -252,12 +252,12 @@ cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL,
 	cv::Point returnPoint = cv::Point();
 
 	float stepX = 1.0f / (screenHL.x - screenLR.x);
-	float posX = (touch.x - screenLR.x) * stepX;
-	returnPoint.x = screenHL.x * (1.0f - posX) + screenLR.x * posX;
+	returnPoint.x = (touch.x - screenLR.x) * stepX;
+	//returnPoint.x = screenHL.x * (1.0f - posX) + screenLR.x * posX;
 
 	float stepY = 1.0f / (screenHL.y - screenLR.y);
-	float posY = (touch.y - screenLR.y) * stepY;
-	returnPoint.y = screenHL.y * (1.0f - posY) + screenLR.y * posY;
+	returnPoint.y = (touch.y - screenLR.y) * stepY;
+	//returnPoint.y = screenHL.y * (1.0f - posY) + screenLR.y * posY;
 
 	return returnPoint;
 }
