@@ -285,6 +285,8 @@ void TouchManager::GetScreenAreaPoints(cv::Point touch, ConversionPoint * screen
 				indexA = i;
 				indexB = i + xSize + 1;
 			}
+
+			++i;
 		}
 
 		i += 2;
