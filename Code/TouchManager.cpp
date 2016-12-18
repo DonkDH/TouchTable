@@ -3,6 +3,19 @@
 
 TouchManager::TouchManager() : m_calibrating(true), m_linuxInput( LinuxInput() )
 {
+	////hl
+	//cv::Point hl = cv::Point(30, 40);
+	////lr
+	//cv::Point lr = cv::Point(65, 90);
+	////point
+	//cv::Point p = cv::Point(45, 50);
+
+	//cv::Point out = TouchSreenToPercent(p, hl, lr);
+
+	//printf("Percent: %f, %f \n", out.x, out.y);
+
+
+
 	cv::String loadedData = Utils::ReadAllTextFromFile(settingsFileName);
 	if (loadedData.length() > 0)
 	{
@@ -248,16 +261,17 @@ void TouchManager::DrawCross(cv::Mat * mat, cv::Point p)
 }
 
 // This is poorly named.....
-cv::Point TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL, cv::Point screenLR)
+cv::Point2d TouchManager::TouchSreenToPercent(cv::Point touch, cv::Point screenHL, cv::Point screenLR)
 {
-	cv::Point returnPoint = cv::Point();
+	cv::Point2d returnPoint = cv::Point();
 
-	float stepX = 1.0f / abs(screenHL.x - screenLR.x);
-	returnPoint.x = (touch.x - screenLR.x) * stepX;
+	float stepX = 1.0f / (screenLR.x - screenHL.x);
+	float x = (touch.x - screenHL.x);
+	returnPoint.x = x * stepX;
 	//returnPoint.x = screenHL.x * (1.0f - posX) + screenLR.x * posX;
 
-	float stepY = 1.0f / abs(screenHL.y - screenLR.y);
-	returnPoint.y = (touch.y - screenLR.y) * stepY;
+	float stepY = 1.0f / (screenLR.y - screenHL.y);
+	returnPoint.y = (touch.y - screenHL.y) * stepY;
 	//returnPoint.y = screenHL.y * (1.0f - posY) + screenLR.y * posY;
 
 	return returnPoint;

@@ -27,7 +27,7 @@ private:
 	void DrawCross(cv::Mat* mat, cv::Point p);
 
 	// This is poorly named.....
-	cv::Point TouchSreenToPercent(cv::Point touch, cv::Point screenHL, cv::Point screenLR);
+	cv::Point2d TouchSreenToPercent(cv::Point touch, cv::Point screenHL, cv::Point screenLR);
 	void GetScreenAreaPoints(cv::Point touch, ConversionPoint* screenHL, ConversionPoint* screenLR);
 
 private:
