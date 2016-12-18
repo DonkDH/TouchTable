@@ -86,16 +86,16 @@ void TouchManager::Update()
 		ConversionPoint screenHL, screenLR;
 		GetScreenAreaPoints(p, &screenHL, &screenLR);
 		
-		DrawCross(&image, screenHL.screenPoint);
-		DrawCross(&image, screenLR.screenPoint);
+		//DrawCross(&image, screenHL.screenPoint);
+		//DrawCross(&image, screenLR.screenPoint);
 
 		cv::Point2f percent = TouchSreenToPercent(p, screenHL.touchPoint, screenLR.touchPoint);
-		printf("Percent: %f, %f \n", percent.x, percent.y);
+		//printf("Percent: %f, %f \n", percent.x, percent.y);
 
 		p.x = (((screenLR.screenPoint.x - screenHL.screenPoint.x)) * percent.x) + screenHL.screenPoint.x;
 		p.y = (((screenLR.screenPoint.y - screenHL.screenPoint.y)) * percent.y) + screenHL.screenPoint.y;
 
-		DrawCross(&image, p);
+		//DrawCross(&image, p);
 
 		if (!m_calibrationTouchActive )
 		{
@@ -121,9 +121,9 @@ void TouchManager::Update()
 
 	m_linuxInput.Update();
 
-	cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
+	/*cvNamedWindow("CalibrationUpdate", CV_WINDOW_NORMAL);
 	cvSetWindowProperty("CalibrationUpdate", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
-	cv::imshow("CalibrationUpdate", image);
+	cv::imshow("CalibrationUpdate", image);*/
 }
 
 void TouchManager::CalibrationUpdate()
